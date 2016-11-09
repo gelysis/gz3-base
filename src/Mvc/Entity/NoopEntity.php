@@ -10,6 +10,8 @@
 declare(strict_types = 1);
 namespace Gz3Base\Mvc\Entity;
 
+use Gz3Base\Mvc\Manager\AbstractManager;
+
 
 class NoopEntity extends AbstractEntity
 {
@@ -17,7 +19,7 @@ class NoopEntity extends AbstractEntity
     /** @var AbstractActionController self::$controller */
     /** @var string self::$routeParameters */
 
-    /** @var BaseManager $this->manager */
+    /** @var AbstractManager $this->manager */
     /** @var array $this->attributes() */
 
 }

@@ -10,10 +10,11 @@
 declare(strict_types = 1);
 namespace Gz3Base\Mvc\Entity;
 
-use Gz3Base\Mvc\ModelInterface;
 use Gz3Base\Mvc\Controller\AbstractActionController;
-use Gz3Base\Mvc\Service\AbstractService;
 use Gz3Base\Mvc\Exception\ClassNotFoundException;
+use Gz3Base\Mvc\Model\ModelInterface;
+use Gz3Base\Mvc\Manager\AbstractManager;
+use Gz3Base\Mvc\Service\AbstractService;
 use Gz3Base\Record\Service\RecordService;
 
 
@@ -23,7 +24,7 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
     /** @var AbstractActionController self::$controller */
     /** @var string self::$routeParameters */
 
-    /** @var BaseManager $this->manager */
+    /** @var AbstractManager $this->manager */
     protected $manager = null;
     /** @var array $this->attributes() */
     protected $attributes = [];

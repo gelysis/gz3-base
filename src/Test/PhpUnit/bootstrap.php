@@ -4,8 +4,8 @@
  * Generic phpunit bootstrap file
  * @package Gz3Base
  * @author Andreas Gerhards <geolysis@zoho.com>
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause -
- * @copyright ©2016, Andreas Gerhards <geolysis@zoho.com>
+ * @copyright ©2016, Andreas Gerhards - All rights reserved
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
  */
 
 require_once __DIR__.'/TestInitialiser.php';

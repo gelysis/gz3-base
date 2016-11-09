@@ -3,7 +3,7 @@
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * @package Gz3Base\Manager
  * @author Andreas Gerhards <geolysis@zoho.com>
- * @copyright ©2016, Andreas Gerhards <geolysis@zoho.com>
+ * @copyright ©2016, Andreas Gerhards - All rights reserved
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
  */
 
@@ -78,7 +78,7 @@ interface ManagerInterface
      * @param mixed $value
      * @return array $readData
      */
-    protected function read(string $field, $value);
+    protected function read(string $field, $value) : array;
 
     /**
      * @return bool $successfulUpdate
