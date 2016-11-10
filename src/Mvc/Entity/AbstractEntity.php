@@ -53,7 +53,7 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
     protected function getManager() : AbstractEntity
     {
         if (is_null($this->manager)) {
-            $namespace = '\\Gz3Base\\Mvc\\Manager\\';
+            $namespace = str_replace('\\Model\\', '\\Manager\\', $this->getNamespace());
             $entityType = ucfirst($this->getEntityType());
             $managerClass = $namespace.$entityType.'Manager';
 

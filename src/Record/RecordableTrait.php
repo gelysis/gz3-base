@@ -48,6 +48,14 @@ trait RecordableTrait
     }
 
     /**
+     * @return string $namespace
+     */
+    public function getNamespace() : string
+    {
+        return $this->getReflectionClass()->getNamespaceName();
+    }
+
+    /**
      * @return string $classname
      */
     public function getShortClassname() : string

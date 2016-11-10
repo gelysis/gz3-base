@@ -19,8 +19,8 @@ Das Gz3Base-Modul ist Open Source und unter der BSD-3-Klausel (http://opensource
 Bitte lesen sie [LICENSE.md] für weitergehende Informationen.
 
 # RELEASE INFORMATION
-Gz3Base 0.9.0
-2016-11-09
+Gz3Base 0.9.1
+2016-11-10
 
 # SYSTEM REQUIREMENTS
 Requires PHP 7.0.7 or later.
