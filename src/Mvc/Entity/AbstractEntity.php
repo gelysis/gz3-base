@@ -26,7 +26,7 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
 
     /** @var AbstractManager $this->manager */
     protected $manager = null;
-    /** @var array $this->attributes() */
+    /** @var array $this->attributes */
     protected $attributes = [];
 
 

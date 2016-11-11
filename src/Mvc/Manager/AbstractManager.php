@@ -86,8 +86,8 @@ abstract class AbstractManager implements ManagerInterface
      */
     public function getEntityType() : string
     {
-        // @todo: if null get entty type : trait ?
-        return $this->entity;
+        // @todo: if null get entity type : trait ?
+        return $this->entityType;
     }
 
     /**
