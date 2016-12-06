@@ -149,7 +149,7 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
      */
     public function getCreatedAt(bool $returnDate = true)
     {
-        return $this->returnDateOrTimestamp($this->attributes['created_at'], $returnDate);
+        return $this->returnDateTimeOrTimestamp($this->attributes['created_at'], $returnDate);
     }
 
     /**
@@ -203,29 +203,12 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
     }
 
     /**
-     * @return bool $isDeactivated
+     * @param int|time() $timestamp
+     * @return string $dateTime
      */
-    public function deactivate() : bool
+    protected function getDateTime($timestamp = time())
     {
-        /** @var AbstractEntity $entity */
-        $entity = $this->setActive(0);
-
-        return $entity->isActive();
-    }
-
-    /**
-     * @return bool $isDeactivated
-     */
-    public function activate() : bool
-    {
-        /** @var AbstractEntity $entity */
-        if ($this->reactivateEntitiesEnabled()) {
-            $entity = $this->setActive(1);
-        }else{
-            $entity = $this;
-        }
-
-        return $entity->isActive();
+        return strftime('%F %T', $timestamp);
     }
 
     /**
@@ -304,46 +287,29 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
      */
     public function isActive() : bool
     {
-        return (bool) $this->getActive();
+        return true;
     }
 
     /**
-     *
-     * @param int $isActive
-     * @return AbstractFlight $this
-     */
-    protected function setActive(int $isActive) : bool
-    {
-        if ($this->attributes['active'] != $isActive) {
-            $this->attributes['active'] = $isActive;
-            $this->modifiedAttributes['active'] = true;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return int $isActive
-     */
-    protected function getActive() : int
-    {
-        return $this->attributes['active'];
-    }
-
-    /**
-     * @param string $datetime
-     * @param bool $returnTimestamp
+     * @param string $dateTime
+     * @param bool $returnDateTime
      * @return string|int SdateOrTimestamp
      */
-    public function returnDateOrTimestamp(string $datetime, bool $returnDate = true)
+    public function returnDateTimeOrTimestamp(string $dateTime = null, bool $returnDateTime = true)
     {
-        $dateOrTimestamp = strtotime($datetime);
-
-        if ($returnDate) {
-            $dateOrTimestamp = strftime('%F %T', $dateOrTimestamp);
+        if (is_null($dateTime)) {
+            $timestamp = time();
+        }else{
+            $timestamp = strtotime($dateTime);
         }
 
-        return SdateOrTimestamp;
+        if ($returnDateTime) {
+            $dateTimeOrTimestamp = $this->getDateTime($timestamp);
+        }else{
+            $dateTimeOrTimestamp = $timestamp;
+        }
+
+        return $dateTimeOrTimestamp;
     }
 
     /**
