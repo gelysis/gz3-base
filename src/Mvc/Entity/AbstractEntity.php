@@ -60,6 +60,7 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
             if (class_exists($managerClass)) {
                 $priority = RecordService::DEBUG;
                 $message = $entityType.' manager exists.';
+
             }else{
                 $managerClass = $namespace.'Manager';
                 $priority = RecordService::CRIT;
@@ -77,6 +78,7 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
 
             if ($manager instanceof Manager) {
                 $this->manager = $manager;
+
             }else{
                 $this->record('gma_err', $priority, $message);
             }
@@ -87,18 +89,22 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
 
     /**
      * Derived method to catches calls to undefined methods.
-     * @param string $name
-     * @param array $params
+     * @param string $methodName
+     * @param array $parameters
      * @return mixed $returnValue
      */
     public function __call(string $methodName, array $parameters)
     {
-        if (strpos($methodName, 'get') === 0 && ! $parameters) {
+        if (strpos($methodName, 'get') === 0 && count($parameters) == 0) {
             $returnValue = $this->get($this->getAttributeCodeFromMethodName($methodName));
-        }elseif (strpos($methodName, 'set') === 0 && is_array($parameters) && count($parameters) == 1) {
+
+        }elseif (strpos($methodName, 'set') === 0 && count($parameters) == 1) {
             $value = current($parameters);
             $returnValue = $this->set($this->getAttributeCodeFromMethodName($methodName), $value);
-        }else{
+
+        }
+
+        if (!isset($returnValue) || strlen($returnValue) == 0) {
             throw new \BadMethodCallException(sprintf('Called undefined method: %s.', $methodName));
             $returnValue = null;
         }
@@ -107,32 +113,58 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
     }
 
     /**
-     * @param array $attributes
+     * @param string $attributeCode
+     * @param mixed $attributeValue
      * @return AbstractEntity $this
-     * @throws \AttributeNotFoundException
      */
-    public function setAttributes(array $data) : AbstractEntity
+    protected function setAttribute(string $attributeCode, $value) : AbstractEntity
     {
-        $attributes = $data;
-        if (count($attributes) > 0) {
-            $this->assignAttributes($attributes);
+        $method = $this->getSetter($attributeCode);
+
+        if (method_exists($this, $method)) {
+            $entity = $this->$method($value);
+
+        }elseif (property_exists($this, $code)) {
+            $value = $this->$code;
+            $message = 'Attribute '.$code.' exists as property but has no getter on entity '.$this->getEntityType().'.';
+            $this->record('get_nmtd', RecordService::NOTICE, $message);
+
         }else{
-            $priority = RecordService::DEBUG;
-            $message = 'No new attributes have been passed.';
+            $this->$attributeCode = $value;
+            $entity = $this;
+            $message = 'Attribute '.$attributeCode.' has no setter on entity '.$this->getEntityType().'.';
+            $this->record('set_nodf', RecordService::WARN, $message);
         }
 
-        return $this;
+        return $entity;
     }
 
     /**
-     * @param array $attributes
-     * @return AbstractEntity $this
+     * @param string $attributeCode
+     * @return mixed $attributeValue
      */
-    protected function assignAttributes(array $attributes) : AbstractEntity
+    protected function getAttribute(string $code)
     {
-        $this->attributes = array_replace_recursive($this->attributes, $attributes);
+        if (property_exists($this, $code)) {
+            $value = $this->$code;
 
-        return $this;
+        }elseif (array_key_exists($code, $this->attributes)) {
+            $value = $this->attributes[$code];
+            $message = 'Attribute '.$code.' exists in attributes but has no property set but exists in attributes.';
+            $this->record('get_npty', RecordService::NOTICE, $message);
+
+        }elseif (array_key_exists($code, $this->attributesStatus)) {
+            $value = null;
+            $message = 'Attribute '.$code.' exists only in attributeStatus.';
+            $this->record('get_nval', RecordService::WARN, $message);
+
+        }else{
+            $message = 'Attribute '.$code.' does not exist on entity '.$this->getEntityType().'.';
+            throw new EntityException($message, static::RECORD_ID_PREFIX.'get_nodf');
+            $value = null;
+        }
+
+        return $value;
     }
 
     /**
@@ -145,7 +177,7 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
 
     /**
      * @param bool $returnTimestamp
-     * @return string|int SaddedAt
+     * @return string|int $createdAt
      */
     public function getCreatedAt(bool $returnDate = true)
     {
@@ -175,10 +207,12 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
         if (! is_null($id)) {
             $this->setAttributes($this->getManager()
                 ->readBy('id', $id));
+
         }elseif (count($this->getAttributes()) > 0) {
             $this->record('rd_fai', RecordService::ERR, 'Tried to read an entity wthout id.', [
                 'entity'=>$this
             ]);
+
         }else{
             throw new ClassNotFoundException('Tried to read empty entity without id.');
         }
@@ -226,24 +260,48 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
      */
     public function set(string $attributeCode, $value) : AbstractEntity
     {
-        $method = $this->getSetter($attributeCode);
-
-        if (method_exists($this, $method)) {
-            $entity = $this->$method($value);
-
-        }elseif (property_exists($this, $code)) {
-            $value = $this->$code;
-            $message = 'Attribute '.$code.' exists as property but has no getter on entity '.$this->getEntityType().'.';
+        if (is_null($value)) {
+            $message = 'Passed forbitten value '.var_export($value, true).' on "'.$attributeCode.'".';
             $this->record('get_nmtd', RecordService::NOTICE, $message);
 
         }else{
-            $this->$attributeCode = $value;
-            $entity = $this;
-            $message = 'Attribute '.$attributeCode.' has no setter on entity '.$this->getEntityType().'.';
-            $this->record('set_nodf', RecordService::WARN, $message);
+            $this->setAttribute($attributeCode, $value);
         }
 
         return $entity;
+    }
+
+        /**
+     * @param string $attributeCode
+     * @return AbstractEntity $this
+     */
+    public function unset(string $attributeCode) : AbstractEntity
+    {
+        $this->setAttribute($attributeCode, null);
+
+        return $entity;
+    }
+
+    /**
+     * @param array $attributesDataArray
+     * @return AbstractEntity $this
+     * @throws \AttributeNotFoundException
+     */
+    public function setAttributes(array $data) : AbstractEntity
+    {
+        $attributes = $data;
+        if (count($attributes) > 0) {
+            foreach ($attributes as $code=>$value) {
+                $this->set($code, $value);
+            }
+
+        }else{
+            $priority = RecordService::DEBUG;
+            $message = 'No new attributes have been passed.';
+            $this->record('set_nnew', RecordService::NOTICE, $message);
+        }
+
+        return $this;
     }
 
     /**
@@ -257,26 +315,10 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
         if (method_exists($this, $method)) {
             $value = $this->$method();
 
-        }elseif (property_exists($this, $code)) {
-            $value = $this->$code;
-            $message = 'Attribute '.$code.' exists as property but has no getter on entity '.$this->getEntityType().'.';
-            $this->record('get_nmtd', RecordService::NOTICE, $message);
-
-        }elseif (array_key_exists($code, $this->attributes)) {
-            $value = $this->$code;
-            $message = 'Attribute '.$code.' exists in attributes but has no getter on entity '.$this->getEntityType().'.';
-            $this->record('get_nprp', RecordService::NOTICE, $message);
-
-        }elseif (array_key_exists($code, $this->attributesStatus)) {
-            $value = null;
-            $message = 'Attribute '.$code.' exists in attributeStatus but has no neither a value in attributes nor'
-                .' a getter on entity '.$this->getEntityType().'.';
-            $this->record('get_nval', RecordService::WARN, $message);
-
         }else{
-            $message = 'Attribute '.$code.' does not exist on entity '.$this->getEntityType().'.';
-            throw new EntityException($message, static::RECORD_ID_PREFIX.'get_nodf');
-            $value = null;
+            $message = 'Attribute '.$code.' has no getter on '.$this->getEntityType().' entity.';
+            $this->record('get_nmth', RecordService::NOTICE, $message);
+            $value = $this->getAttribute($code, true);
         }
 
         return $value;
@@ -293,7 +335,7 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
     /**
      * @param string $dateTime
      * @param bool $returnDateTime
-     * @return string|int SdateOrTimestamp
+     * @return string|int $dateOrTimestamp
      */
     public function returnDateTimeOrTimestamp(string $dateTime = null, bool $returnDateTime = true)
     {
@@ -332,16 +374,26 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
 
     /**
      * @param string $methodName
+     * @return bool $isSetterOrGetter
+     */
+    protected function isSetterOrGetter(string $methodName)
+    {
+        $isSetterOrGetter = (substr($methodName, 0, 3) === 'set' || substr($methodName, 0, 3) === 'get');
+
+        return $isSetterOrGetter;
+    }
+
+    /**
+     * @param string $methodName
      * @return string $attributeCode
      */
     protected function getAttributeCodeFromMethodName(string $methodName) : string
     {
-        $isSetterOrGetter = (substr($methodName, 0, 3) === 'set' || substr($methodName, 0, 3) === 'get');
-
-        if ($isSetterOrGetter) {
+        if ($this->isSetterOrGetter($methodName)) {
             $attributeCode = strtolower(trim(preg_replace('#([A-Z])#', '_$1', substr($methodName, 3)), '_'));
+
         }else{
-            $attributeCode = null;
+            $attributeCode = '';
         }
 
         return $attributeCode;
@@ -354,12 +406,11 @@ abstract class AbstractEntity extends AbstractService implements ModelInterface
      */
     protected function getMethodFromAttributeCode(string $methodType, string $attributeCode) : string
     {
-        $isSetterOrGetter = ($methodType === 'set' || $methodType === 'get');
-
-        if ($isSetterOrGetter) {
+        if ($this->isSetterOrGetter($methodType)) {
             $method = $methodType.str_replace(' ', '', ucwords(str_replace('_', ' ', $attributeCode)));
+
         }else{
-            $method = null;
+            $method = '';
         }
 
         return $method;
