@@ -2,13 +2,14 @@
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * @package Gz3Base
- * @author Andreas Gerhards <geolysis@zoho.com>
- * @copyright ©2016, Andreas Gerhards - All rights reserved
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
+ * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
+ * @copyright Copyright ©2016 Andreas Gerhards
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
 declare(strict_types = 1);
 namespace Gz3Base;
+
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
@@ -33,6 +34,7 @@ abstract class AbstractModule
     }
 
     /**
+     * Module initialisation
      * @return void
      */
     abstract public function init();
@@ -94,21 +96,18 @@ abstract class AbstractModule
     public function getConfig() : array
     {
         $moduleConfig = $this->getDirectory().'/config/module.config.php';
-
         if (file_exists($moduleConfig)) {
             $moduleConfig = include $moduleConfig;
             $localConfig = $this->getDirectory().'/config/module.local.php';
 
             $handle = opendir($this->getDirectory().'/config');
-            while ($configFile = readdir($handle)) {
+                while ($configFile = readdir($handle)) {
                 $isModuleConfigFile = preg_match('#module\.(\w+)\.php#ism', $configFile, $match);
                 $includeModuleConfigFile = $isModuleConfigFile && !in_array($match[1], ['config', 'local']);
-
                 if ($includeModuleConfigFile) {
                     $moduleConfig = array_replace_recursive(
                         $moduleConfig,
-                        include $this->getDirectory().'/config/'.$configFile
-                    );
+                        include $this->getDirectory().'/config/'.$configFile);
                 }
             }
             closedir($handle);

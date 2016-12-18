@@ -2,9 +2,9 @@
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * @package Gz3Base\Service
- * @author Andreas Gerhards <geolysis@zoho.com>
- * @copyright ©2016, Andreas Gerhards - All rights reserved
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
+ * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
+ * @copyright Copyright ©2016 Andreas Gerhards
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
 declare(strict_types = 1);
@@ -24,15 +24,6 @@ abstract class AbstractService implements ServiceInterface, RecordableInterface
     /** @var string[] self::$routeParameters */
 
     /** @var string|null $this->recordIdPrefix */
-
-
-    /**
-     * @return RecordService self::$controller->getConfigService()
-     */
-    public function getConfigService()
-    {
-        return self::$controller->getConfigService();
-    }
 
     /**
      * @return RecordService self::$controller->getRecordService()

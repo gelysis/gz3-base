@@ -2,16 +2,17 @@
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * @package Gz3Base\Manager
- * @author Andreas Gerhards <geolysis@zoho.com>
- * @copyright ©2016, Andreas Gerhards - All rights reserved
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
+ * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
+ * @copyright Copyright ©2016 Andreas Gerhards
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
 declare(strict_types = 1);
 namespace Gz3Base\Mvc\Manager;
 
 use Gz3Base\Mvc\Controller\AbstractActionController;
-use Gz3Base\Mvc\Service\ConfigService;
+use Gz3Base\Mvc\Service\AbstractService;
+use Gz3Base\Mvc\Service\ServiceInterface;
 use Gz3Base\Record\Service\RecordService;
 
 
@@ -27,13 +28,13 @@ interface ManagerInterface
     /**
      * @return ConfigService $configService
      */
-    public function getConfigService() : ConfigService;
+    public function getConfigService() : AbstractService;
 
 
     /**
      * @return RecordService $this->recordService
      */
-    public function getRecordService() : RecordService;
+    public function getRecordService() : ServiceInterface;
 
     /**
      * @return string $this->entityType

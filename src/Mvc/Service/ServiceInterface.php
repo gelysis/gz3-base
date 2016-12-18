@@ -2,9 +2,9 @@
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * @package Gz3Base\Service
- * @author Andreas Gerhards <geolysis@zoho.com>
- * @copyright ©2016, Andreas Gerhards - All rights reserved
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
+ * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
+ * @copyright Copyright ©2016 Andreas Gerhards
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
 declare(strict_types = 1);
@@ -15,16 +15,15 @@ use Gz3Base\Mvc\Controller\AbstractActionController;
 
 interface ServiceInterface
 {
-
     /**
      * @param AbstractActionController $controller
-     * @return ServiceInterface $this
+     * @return mixed $this
      */
-    public function setController(AbstractActionController $controller) : ServiceInterface;
+    public function setController(AbstractActionController $controller) : AbstractService;
 
     /**
      * @return AbstractActionController $controller
      */
-    public function getController() : AbstractActionController;
+    protected function getController() : AbstractActionController;
 
 }

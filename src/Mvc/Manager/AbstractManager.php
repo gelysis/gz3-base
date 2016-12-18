@@ -2,16 +2,15 @@
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * @package Gz3Base\Manager
- * @author Andreas Gerhards <geolysis@zoho.com>
- * @copyright ©2016, Andreas Gerhards - All rights reserved
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
+ * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
+ * @copyright Copyright ©2016 Andreas Gerhards
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
 declare(strict_types = 1);
 namespace Gz3Base\Mvc\Manager;
 
 use Gz3Base\Mvc\Controller\AbstractActionController;
-use Gz3Base\Record\Service\RecordService;
 use Gz3Base\Mvc\Service\AbstractService;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
@@ -86,7 +85,7 @@ abstract class AbstractManager implements ManagerInterface
      */
     public function getEntityType() : string
     {
-        // @todo: if null get entity type : trait ?
+        // @todo: Implement functionality, if null get entity type : trait ?
         return $this->entityType;
     }
 
@@ -221,7 +220,7 @@ abstract class AbstractManager implements ManagerInterface
             $archived = false;
         }
 
-        if ($success) {
+        if ($archived) {
             $this->record('arc_suc', RecordService::INFO, 'Archived entity successfully.', $this->data);
         }elseif ($duplicate) {
             $this->record('arc_err', RecordService::ERROR, 'Archiving ended up with duplicate data sets. ', $this->data);
@@ -229,7 +228,7 @@ abstract class AbstractManager implements ManagerInterface
             $this->record('arc_fai', RecordService::ERROR, 'Archiving failed.', $this->data);
         }
 
-        return (bool) $success;
+        return $archived;
     }
 
 }

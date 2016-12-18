@@ -1,11 +1,10 @@
 <?php
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
- * Recordable Trait
- * @package Gz3Base\Record
- * @author Andreas Gerhards <geolysis@zoho.com>
- * @copyright ©2016, Andreas Gerhards - All rights reserved
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
+ * @package Gz3Base\Model
+ * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
+ * @copyright Copyright ©2016 Andreas Gerhards
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
 declare(strict_types = 1);
@@ -19,8 +18,8 @@ trait RecordableTrait
 
     /** @var \ReflectionClass|null $this->reflectionClass */
     protected $reflectionClass = null;
-    /** @var string[] $this->methodNames */
-    protected $methodNames = [];
+    /** @var string[] $this->methodName */
+    protected $methodName = [];
     /** @var int[] $this->methodStart */
     protected $methodStart = [];
     /** @var string|null $this->recordIdPrefix */
@@ -30,7 +29,7 @@ trait RecordableTrait
     /**
      * @return \ReflectionClass $this->reflectionClass
      */
-    protected function getReflectionClass() : \ReflectionClass
+    protected function getReflectionClass()
     {
         if (is_null($this->reflectionClass)) {
             $this->reflectionClass = new \ReflectionClass($this);
@@ -42,23 +41,15 @@ trait RecordableTrait
     /**
      * @return string $fullClassname
      */
-    public function getFullClassname() : string
+    protected function getFullClassname() : string
     {
         return $this->getReflectionClass()->getName();
     }
 
     /**
-     * @return string $namespace
-     */
-    public function getNamespace() : string
-    {
-        return $this->getReflectionClass()->getNamespaceName();
-    }
-
-    /**
      * @return string $classname
      */
-    public function getShortClassname() : string
+    protected function getShortClassname() : string
     {
         return $this->getReflectionClass()->getShortName();
     }
@@ -83,8 +74,6 @@ trait RecordableTrait
     {
         if (is_null($this->recordIdPrefix)) {
             $namespaceArray = explode('\\', $this->getReflectionClass()->getNamespaceName(), 4);
-            $this->recordIdPrefix = '';
-
             foreach ($namespaceArray as $key=>$part) {
                 $length = (int) max(1, ceil((4 - $key - count($namespaceArray)) / 2) * 2);
                 $this->recordIdPrefix .= strtolower(substr($part, 0, $length));
@@ -104,10 +93,9 @@ trait RecordableTrait
      * [@param array $data]
      * @return bool $success
      */
-    public function record(string $id, int $priority, string $message, array $data = []) : bool
+    public function record(string $id, int $priority, string $message, array $data = array()) : bool
     {
         $recordId = $this->getRecordIdPrefix().$id;
-
         return $this->geRecordService()->record($recordId, $priority, $message, $data);
     }
 
@@ -117,9 +105,9 @@ trait RecordableTrait
      */
     protected function getAbbreviatedMethodName(string $methodName = '') : string
     {
-        if ($methodName == '' && count($this->methodNames) > 0) {
-            $methodNames = $this->methodNames;
-            $methodName = array_pop($methodNames);
+        if ($methodName == '' && $this->methodName) {
+            $methodName = $this->methodName;
+            $methodName = array_pop($methodName);
         }
         $recordId = strtolower(substr($methodName, 0, 3));
 
@@ -128,10 +116,10 @@ trait RecordableTrait
 
     /**
      * setSecondsPrecision()
-     * @param float $seconds
-     * @return float $seconds
+     * @param double $seconds
+     * @return double $seconds
      */
-    protected function setSecondsPrecision(float $seconds) : float
+    protected function setSecondsPrecision(double $seconds) : double
     {
         if ($seconds < 10) {
             $decimals = min(3, 1 - floor(log($seconds, 10)));
@@ -146,12 +134,13 @@ trait RecordableTrait
     }
 
     /**
-     * @param float $seconds
+     * @param double $seconds
      * @return string $formattedInterval
      */
-    protected function formatSeconds(float $seconds) : string
+    protected function formattedSeconds(double $seconds) : string
     {
-        $times = ['h'=>floor($seconds / 3600)];
+        $times = [];
+        $times['h'] = floor($seconds / 3600);
         $times['min'] = floor(($seconds - $times['h'] * 3600) / 60);
         $times['s'] = $this->setSecondsPrecision($seconds) - $times['h'] * 3600 - $times['min'] * 60;
 
@@ -161,14 +150,16 @@ trait RecordableTrait
                 $formattedTimes[] = $value.$unit;
             }
         }
+        unset($times);
 
         if (count($formattedTimes) == 0) {
-            $formattedInterval = '0.000s';
+            $formattedSeconds = '0.000s';
         }else{
-            $formattedInterval = implode(', ', $formattedTimes);
+            $formattedSeconds = implode(', ', $formattedTimes);
         }
+        unset($formattedTimes);
 
-        return $formattedInterval;
+        return $formattedSeconds;
     }
 
     /**
@@ -183,11 +174,13 @@ trait RecordableTrait
     protected function initialiseMethod(string $methodName) : string
     {
         $this->methodStart[] = microtime(true);
-        $this->methodNames[] = $methodName;
+        $this->methodName[] = $methodName;
 
         $recordId = $this->getAbbreviatedMethodName($methodName).'_sta';
         $message = $methodName.' initialised at '.strftime('%H:%M:%S').' on '.strftime('%d.%m.%Y');
-        $data = ['init'=>current($this->methodStart)];
+        $data = array(
+            'init'=>current($this->methodStart)
+        );
 
         if ($this->useInitialiseRecording()) {
             $this->record($recordId, RecordService::DEVEL, $message, $data);
@@ -210,44 +203,45 @@ trait RecordableTrait
     {
         $end = microtime(true);
 
-        if (!count($this->methodNames) || !count($this->methodStart)) {
+        if (!count($this->methodName) || !count($this->methodStart)) {
             $runtime = 0;
-            $recordId = '_noi';
+            $recordId = $this->getAbbreviatedMethodName($methodName).'_noi';
             $priority = RecordService::WARN;
             $message = '. Could not find init information.';
-            $data = [
-                'method name'=>current($this->methodNames),
+            $data = array(
+                'method name'=>current($this->methodName),
                 'method start'=>current($this->methodStart)
-            ];
+            );
         }else{
             $start = array_pop($this->methodStart);
-            $name = array_pop($this->methodNames);
+            $name = array_pop($this->methodName);
 
             $runtime = $this->setSecondsPrecision($end - $start);
 
             if ($methodName != $name) {
-                $recordId = '_err';
+                $recordId = $this->getAbbreviatedMethodName($methodName).'_ier';
                 $priority = RecordService::WARN;
                 $message = '. Could only find init information of '.$name.'.';
             }else{
-                $recordId = '_end';
+                $recordId = $this->getAbbreviatedMethodName($methodName).'_end';
                 $priority = RecordService::INFO;
-                $message = '. Runtime was '.$this->formatSeconds($runtime).'.';
+                $message = '. Runtime was '.$this->formattedSeconds($runtime).'.';
             }
-
-            $data = ['runtime'=>$runtime];
+            $data = array(
+                'runtime'=>$runtime
+            );
         }
 
         if ($forced) {
             $methodName = 'Forced '.$methodName.' to be';
-            $recordId = 'f'.$recordId;
+            $recordId = $this->getAbbreviatedMethodName($methodName).'f';
         }
 
         $message = $methodName.' deinitialised at '.strftime('%H:%M:%S').' on '.strftime('%d.%m.%Y').$message;
         $data['deinit'] = $end;
 
         if ($this->useDeinitialiseRecording()) {
-            $this->record($this->getAbbreviatedMethodName($methodName).$recordId, $priority, $message, $data);
+            $this->record($recordId, $priority, $message, $data);
         }
 
         return $recordId;

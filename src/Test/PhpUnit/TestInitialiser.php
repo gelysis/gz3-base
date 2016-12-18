@@ -1,10 +1,10 @@
 <?php
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
- * @package Gz3Base\Model
- * @author Andreas Gerhards <geolysis@zoho.com>
- * @copyright ©2016, Andreas Gerhards - All rights reserved
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
+ * @package Gz3Base
+ * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
+ * @copyright Copyright ©2016 Andreas Gerhards
  */
 
 namespace Gz3Base\Test\PhpUnit;
@@ -16,69 +16,33 @@ use Zend\ServiceManager\ServiceManager;
 
 class TestInitialiser
 {
-
     /** @var ServiceManager self::$serviceManager */
     protected static $serviceManager;
 
-
     /**
+     * @param array $config
      * @param string[] $moduleTestPaths
      */
-    public static function init()
+    public static function init(array $config, array $moduleTestPaths)
     {
-        $modules = $moduleTestPaths = array();
+        $modules = array();
         $loader = new StandardAutoloader();
-        $applicationConfig = self::getApplicationConfig();
 
-        foreach ($applicationConfig['module_listener_options']['module_paths'] as $modulePath) {
-            foreach ($applicationConfig['modules'] as $module) {
-                $testPath = realpath($modulePath.'/'.$module.'/test');
-                if ($testPath) {
-                    $loader->registerNamespace($module.'Test', $testPath.'/'.$module);
-                    $modules[] = $module;
-                }
-            }
+        foreach ($moduleTestPaths as $module=>$path) {
+            $modules[] = $module;
+            $loader->registerNamespace($module.'Test', $path.'/'.$module);
         }
 
-        self::registerAddtionalNamespace($loader);
+        $loader->registerNamespace('Gz3Base\\Test', __DIR__);
         $loader->register();
 
-        $applicationConfig['modules'] = $modules;
+        $config['modules'] = $modules;
 
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
-        $serviceManager->setService('ApplicationConfig', $applicationConfig);
+        $serviceManager->setService('ApplicationConfig', $config);
         $serviceManager->get('ModuleManager')->loadModules();
 
         static::$serviceManager = $serviceManager;
-    }
-
-    /**
-     * @return array $applicationConfig
-     */
-    public static function getApplicationConfig()
-    {
-        $root = self::getRootPath();
-        $applicationConfig = include $root.'config/application.config.php';
-
-        return $applicationConfig;
-    }
-
-    /**
-     * @return array $applicationConfig
-     */
-    public static function getRootPath()
-    {
-        return strstr(__DIR__, 'vendor/', true);
-    }
-
-    /**
-     * @param StandardAutoloader &$loader
-     * @return StandardAutoloader $loader
-     */
-    protected static function registerAddtionalNamespace(StandardAutoloader &$loader) : StandardAutoloader
-    {
-        $loader->registerNamespace('Gz3Base\\Test', __DIR__);
-        return $loader;
     }
 
     /**

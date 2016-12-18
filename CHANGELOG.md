@@ -3,6 +3,12 @@ GZ3BASE
 
 # CHANGELOG
 
+### 0.9.3 (2016-12-18)
+* Few bug fixes
+* Added \Gz3Base\Record\Service\NoopRecordService
+
+# CHANGELOG
+
 ### 0.9.2 (2016-12-10)
 
 Minor tweaks of the AbstractEntity class

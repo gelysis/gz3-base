@@ -2,53 +2,57 @@
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * @package Gz3Base\Controller
- * @author Andreas Gerhards <geolysis@zoho.com>
- * @copyright ©2016, Andreas Gerhards - All rights reserved
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
+ * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
+ * @copyright Copyright ©2016 Andreas Gerhards
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
 declare(strict_types = 1);
 namespace Gz3Base\Mvc\Controller;
 
+use Gz3Base\Mvc\Entity\AbstractEntity;
 use Gz3Base\Mvc\Exception\ActionException;
 use Gz3Base\Mvc\Exception\BadMethodCallException;
+use Gz3Base\Mvc\Service\AbstractService;
 use Gz3Base\Mvc\Service\ServiceInterface;
-use Gz3Base\Mvc\Service\ConfigService;
 use Gz3Base\Record\RecordableInterface;
 use Gz3Base\Record\RecordableTrait;
 use Gz3Base\Record\Service\RecordService;
-
 use Zend\Mvc\Controller\AbstractActionController as ZendAbstractActionController;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Gz3Base\Mvc\Entity\AbstractEntity;
-use Gz3Base\Mvc\Service\AbstractService;
 use Gz3Base\Mvc\Entity\NoopEntity;
 
 
-abstract class AbstractActionController extends ZendAbstractActionController implements RecordableInterface
+abstract class AbstractActionController extends ZendAbstractActionController
+    implements RecordableInterface
 {
     use RecordableTrait;
 
+    /** @var bool self::INIT_RECORDING */
     const INIT_RECORDING = true;
+    /** @var bool self::DEINIT_RECORDING */
     const DEINIT_RECORDING = true;
 
+    /** @var BaseService[] self::$services */
+    protected static $services = [];
+
     /** @var ServiceLocatorInterface $this->serviceLocator */
-    protected $serviceLocator;
     /** @var array $this->routeParameters */
     protected $routeParameters = null;
     /** @var \ReflectionClass $reflectionClass */
     /** @var string $this->recordIdPrefix */
     /** @var array $this->methodName */
-    /** @var array $methodStart */
+    /** @var array $this->methodStart */
 
 
     /**
      * @param ServiceLocatorInterface $serviceLocator
-     * @return BaseController $this
+     * @return AbstractActionController $this
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator) : AbstractActionController
     {
         $this->serviceLocator = $serviceLocator;
+
         return $this;
     }
 
@@ -67,16 +71,18 @@ abstract class AbstractActionController extends ZendAbstractActionController imp
     protected function getService(string $serviceCode) : ServiceInterface
     {
         $serviceClassIdentifier = 'Service\\'.ucfirst($serviceCode);
-        $service = $this->getServiceLocator()->get($serviceClassIdentifier)
-            ->setController($this);
+        if (!isset(self::$services[$serviceCode])) {
+            self::$services[$serviceCode] = $this->getServiceLocator()->get($serviceClassIdentifier)
+                ->setController($this);
+        }
 
-        return $service;
+        return self::$services[$serviceCode];
     }
 
     /**
-     * @return RecordService $recordService
+     * @return RecordService self::$services['record']
      */
-    protected function getRecordService() : RecordService
+    protected function getRecordService() : ServiceInterface
     {
         return $this->getService('record');
     }
@@ -88,7 +94,7 @@ abstract class AbstractActionController extends ZendAbstractActionController imp
      * @param array $data
      * @return bool $success
      */
-    public function record(string $id, int $priority, string $message, array $data = array()) : bool
+    public function record(string $id, int $priority, string $message, array $data = []) : bool
     {
         $id = $this->getRecordIdPrefix().$id;
 
@@ -96,9 +102,9 @@ abstract class AbstractActionController extends ZendAbstractActionController imp
     }
 
     /**
-     * @return ConfigService $configService
+     * @return ConfigService self::$services['config']
      */
-    public function getConfigService() : ConfigService
+    public function getConfigService() : AbstractService
     {
         return $this->getService('config');
     }
@@ -110,8 +116,9 @@ abstract class AbstractActionController extends ZendAbstractActionController imp
     public function getEntity(string $entityType) : AbstractEntity
     {
         try {
-            /** @var AbstractEntity $entity */
-            $entity = $this->getServiceLocator()->get($entityType)
+            /** @var \Gz3Base\Mvc\Entity\AbstractEntity $entity */
+            $entity = $this->getServiceLocator()
+                ->get($entityType)
                 ->setController($this);
         }catch (\Exception $exception) {
             $entity = null;
@@ -119,7 +126,7 @@ abstract class AbstractActionController extends ZendAbstractActionController imp
 
         if (!$entity instanceof AbstractEntity) {
             $this->record('gey_err', RecordService::ERROR, $entityType.' is not existing!');
-            $entity = NoopEntity;
+            $entity = new NoopEntity();
         }
 
         return $entity;
@@ -157,24 +164,24 @@ abstract class AbstractActionController extends ZendAbstractActionController imp
         $routeParameters = $this->params()->fromRoute();
 
         if (isset($_SERVER['argv'])) {
-            $routeParameters = array_merge($routeParameters, array(
+            $routeParameters = array_merge($routeParameters, [
                 'route_type'=>'command',
                 'command'=>implode(' ', $_SERVER['argv'])
-            ));
+            ]);
         }else{
-            $routeParameters = array_merge($routeParameters, array(
+            $routeParameters = array_merge($routeParameters, [
                 'route_type'=>'uri',
                 'uri'=>$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']
-            ));
+            ]);
         }
 
         if (count($routeParameters) > 0) {
             $this->routeParameters = $routeParameters;
-            $action = $routeParameters['action'];
+            $action = $this->routeParameters['action'];
+            $methodName = parent::getMethodFromAction($action);
         }
-        $methodName = parent::getMethodFromAction($action);
 
-        if (isset($action) && method_exists($this, $methodName)) {
+        if (isset($methodName) && method_exists($this, $methodName)) {
             $this->initialiseMethod($methodName);
             try {
                 $actionReturn = $this->$methodName();
@@ -183,8 +190,8 @@ abstract class AbstractActionController extends ZendAbstractActionController imp
                 throw new ActionException($message, $exception->getCode(), $exception->getPrevious());
             }
             $this->deinitialiseMethod($methodName);
-
-        }else{
+        // Dependend on Zend\Mvc\Controller\AbstractActionController::notFoundAction()
+        }elseif ($action !== 'not-found') {
             $message = 'Action '.$action.' not properly implemented.';
             throw new BadMethodCallException($message, get_called_class(), $action);
             $actionReturn = null;
@@ -195,7 +202,7 @@ abstract class AbstractActionController extends ZendAbstractActionController imp
 
     /**
      * {@inheritDoc}
-     * @see \Zend\Mvc\Controller::getMethodFromAction($action)
+     * @see \Zend\Mvc\Controller\AbstractActionController::getMethodFromAction($action)
      */
     public static function getMethodFromAction($action) : string
     {

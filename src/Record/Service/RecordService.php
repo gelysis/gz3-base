@@ -2,9 +2,9 @@
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * @package Gz3Base\Service
- * @author Andreas Gerhards <geolysis@zoho.com>
- * @copyright ©2016, Andreas Gerhards - All rights reserved
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
+ * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
+ * @copyright Copyright ©2016 Andreas Gerhards
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
 declare(strict_types = 1);
@@ -20,30 +20,30 @@ class RecordService extends Logger implements ServiceInterface
 {
     use ServiceTrait;
 
-    /*    EMERG = 0;  // System is unusable
-     *    ALERT = 1;  // Action must be taken immediately
-     *    CRIT = 2;  // Critical conditions
-     *    ERR = 3;  // Error conditions */
-    const ERROR = self::ERR;
-    /*    WARN = 4;  // Warning conditions
-     *    NOTICE = 5;  // Normal but significant condition
-     *    INFO = 6;  // Informational message
-     *    DEBUG = 7;  // Debug-level message */
-    const DETAIL = 8;  // More detailed debug-level message
-    const DEVEL = 9;  // Development message
-
-    const INVALID_PRIORITY_LABEL = 'INVD';
-
     /** @var string self::$threadIdentifier */
     protected static $threadIdentifier = null;
     /** @var AbstractActionController self::$controller */
 
-    /** @var int[] self::$errorPriorityMap
-     *  @var bool|false self::$registeredErrorHandler
-     *  @var bool|false self::$registeredFatalErrorShutdownFunction
-     *  @var bool|false self::$registeredExceptionHandler
-     *  @var string[] $this->priorities
-     *  @var string[] $this->gz3Priorities */
+    /** @static EMERG = 0; // System is unusable
+     * @static ALERT = 1; // Action must be taken immediately
+     * @static CRIT = 2; // Critical conditions
+     * @static ERR = 3; // Error conditions */
+    const ERROR = self::ERR;
+    /** @static WARN = 4; // Warning conditions
+     * @static NOTICE = 5; // Normal, but significant, condition
+     * @static INFO = 6; // Informational message
+     * @static DEBUG = 7; // Debug-level message */
+    const DETAIL = 8; // More detailed debug-level message
+    const DEVEL = 9; // Development message
+
+    const INVALID_PRIORITY_LABEL = 'INVD';
+
+    /** @var int[] self::$errorPriorityMap */
+    /** @var bool|false self::$registeredErrorHandler */    /**
+    /** @var bool|false self::$registeredFatalErrorShutdownFunction */
+    /** @var bool|false self::$registeredExceptionHandler */
+    /** @var string[] $this->priorities */
+    /** @var string[] $this->gz3Priorities */
     protected $gz3Priorities = [
         self::ERR=>'ERROR',
         self::DETAIL=>'DETAIL',
@@ -71,6 +71,7 @@ class RecordService extends Logger implements ServiceInterface
         $this->priorities = array_replace($this->priorities, $this->gz3Priorities);
     }
 
+
     /**
      * @param string $threadIdentifier
      * @return RecordService $this
@@ -88,18 +89,18 @@ class RecordService extends Logger implements ServiceInterface
      * @param int $priority
      * @return bool $isValidPriority
      */
-    public function isValidPriority(int $priority) : bool
+    public static function isValidPriority(int $priority) : bool
     {
-        return in_array($priority, array_keys($this->priorities));
+        return in_array($priority, array_keys(self::$priorities));
     }
 
     /**
      * @param int $priority
      * @return bool $isValidPriorityLabel
      */
-    public function isValidPriorityLabel(string $priority) : bool
+    public static function isValidPriorityLabel(string $priority) : bool
     {
-        return in_array($priority, $this->priorities);
+        return in_array($priority, self::$priorities);
     }
 
     /**
@@ -110,8 +111,8 @@ class RecordService extends Logger implements ServiceInterface
      */
     protected function getLogMessage(string $id, int $priority, string $message) : string
     {
-        if ($this->isValidPriority($priority)) {
-            $priorityLabel = $this->priorities[$priority];
+        if (self::isValidPriority($priority)) {
+            $priorityLabel = self::$priorities[$priority];
         }else{
             $priorityLabel = self::INVALID_PRIORITY_LABEL;
         }

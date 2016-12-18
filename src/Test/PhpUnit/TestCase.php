@@ -1,10 +1,10 @@
 <?php
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
- * @package Gz3Base\Model
- * @author Andreas Gerhards <geolysis@zoho.com>
- * @copyright ©2016, Andreas Gerhards - All rights reserved
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
+ * @package Gz3Base
+ * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
+ * @copyright Copyright ©2016 Andreas Gerhards
  */
 
 namespace Gz3Base\Test\PhpUnit;
@@ -44,7 +44,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     public function getService(string $serviceName) : AbstractService
     {
-        return TestInitialiser::getServiceManager()->get($serviceName);
+        return Rapaxa::getServiceManager()->get($serviceName);
     }
 
     /**

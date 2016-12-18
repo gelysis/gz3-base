@@ -2,92 +2,54 @@
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * @package Gz3Base\Controller
- * @author Andreas Gerhards <geolysis@zoho.com>
- * @copyright ©2016, Andreas Gerhards - All rights reserved
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
+ * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
+ * @copyright Copyright ©2016 Andreas Gerhards
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
 declare(strict_types = 1);
 namespace Gz3Base\Mvc\Controller;
 
-use Gz3Base\Mvc\Entity\AbstractEntity;
 use Gz3Base\Mvc\Entity\NoopEntity;
 use Gz3Base\Mvc\Service\AbstractService;
 use Gz3Base\Mvc\Service\NoopService;
-use Zend\Di\ServiceLocatorInterface;
+use Gz3Base\Mvc\Service\ServiceInterface;
 
 
 class NoopController extends AbstractActionController
 {
 
+    /** @var bool self::INIT_RECORDING */
     const INIT_RECORDING = false;
+    /** @var bool self::DEINIT_RECORDING */
     const DEINIT_RECORDING = false;
 
-    /** @var AbstractService[] self::$services */
-    /** @var ServiceLocatorInterface $this->serviceLocator */
-    /** @var array $this->routeParameters */
-    /** @var \ReflectionClass $reflectionClass */
-    /** @var string $this->recordIdPrefix */
-    /** @var array $this->methodName */
-    /** @var array $methodStart */
-
 
     /**
      * {inheritDoc}
-     * @see \Gz3Base\Mvc\Controller\AbstractActionController::getService()
-     * @return AbstractService $noopService
+-    * @see \Gz3Base\Mvc\Controller\AbstractActionController::getService()
      */
-    protected function getService(string $serviceCode) : AbstractService
+    protected function getService(string $serviceCode) : ServiceInterface
     {
         return new NoopService();
     }
 
     /**
-     * {inheritDoc}
+     * {@inheritDoc}
      * @see \Gz3Base\Mvc\Controller\AbstractActionController::getRecordService()
-     * @return AbstractService $noopService
      */
-    protected function getRecordService() : AbstractService
+    protected function getRecordService() : ServiceInterface
     {
-        return new NoopService();
+        return new NoopRecordService();
     }
 
     /**
-     * {inheritDoc}
-     * @see \Gz3Base\Mvc\Controller\AbstractActionController::record()
-     */
-    public function record(string $id, int $priority, string $message, array $data = array()) : bool
-    {
-        return false;
-    }
-
-    /**
-     * {inheritDoc}
-     * @see \Gz3Base\Mvc\Controller\AbstractActionController::getConfigService()
-     * @return AbstractService $noopService
-     */
-    public function getConfigService() : AbstractService
-    {
-        return new NoopService();
-    }
-
-    /**
-     * {inheritDoc}
-     * @see \Gz3Base\Mvc\Controller\AbstractActionController::getEntity()
+     * @param string $entityType
      * @return AbstractEntity $noopEntity
      */
-    public function getEntity(string $entityType) : AbstractEntity
+    public function getEntity(string $entityType)
     {
         return new NoopEntity();
-    }
-
-    /**
-     * {inheritDoc}
-     * @see \Gz3Base\Mvc\Controller\AbstractActionController::getRouteParameters()
-     */
-    public function getRouteParameters()
-    {
-        return [];
     }
 
 }

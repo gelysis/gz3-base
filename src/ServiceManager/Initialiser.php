@@ -1,22 +1,21 @@
 <?php
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
- * @package Gz3Base\Model
- * @author Andreas Gerhards <geolysis@zoho.com>
- * @copyright ©2016, Andreas Gerhards - All rights reserved
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please view LICENSE.md for more information
+ * @package Gz3Base
+ * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
+ * @copyright Copyright ©2016 Andreas Gerhards
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
 declare(strict_types = 1);
 namespace Gz3Base\ServiceManager;
 
 use Gz3Base\Mvc\Controller\AbstractActionController;
-use Gz3Base\Mvc\Manager\AbstractManager;
 use Gz3Base\Mvc\Service\AbstractService;
 use Gz3Base\Mvc\Service\ConfigService;
 use Gz3Base\Mvc\Service\ServiceInterface;
-use Gz3Base\Record\RecordableInterface;
-use Gz3Base\Record\Service\RecordService;
+use Gz3Base\Record\Service\AbstractRecordService;
+
 use Zend\ServiceManager\Initializer\InitializerInterface;
 use Interop\Container\ContainerInterface;
 
@@ -24,8 +23,7 @@ use Interop\Container\ContainerInterface;
 class Initialiser implements InitializerInterface
 {
 
-    /** @var array self::$config */
-    protected static $config = null;
+    protected static $configuration = null;
 
 
     /**
@@ -37,26 +35,33 @@ class Initialiser implements InitializerInterface
         $initialise = false;
 
         if (is_array($instance)) {
-            self::$config = $instance;
+            self::$configuration = $instance;
         }
 
-        if ($instance instanceof AbstractActionController) {
-            $instance->setServiceLocator($container);
-            $initialise |= true;
+        if ($instance instanceof AbstractService) {
+            if ($instance instanceof ConfigService) {
+                $instance->setConfiguration(self::$configuration);
+                $initialise = true;
+            }
+            if ($instance instanceof AbstractManager) {
+                $instance->setConfigService($container->get('Service\Config'));
+                $initialise = true;
+            }
         }
 
-        if ($instance instanceof ConfigService) {
-            $instance->setConfig(self::$config);
-            $initialise |= true;
-        }
-
-        if ($instance instanceof RecordService) {
+        if ($instance instanceof AbstractRecordService) {
             $instance->setThreadIdentifier('_'.dechex(rand(0x000, 0xFFF)));
-            $initialise |= true;
+            $initialise = true;
         }
 
-        if (method_exists($instance, 'initialise')) {
-            $initialise |= $instance->initialise();
+        if ($instance instanceof AbstractActionController || $instance instanceof ServiceInterface) {
+            if (method_exists($instance, 'setServiceLocator')) {
+                $instance->setServiceLocator($container);
+                $initialise = true;
+            }
+            if (method_exists($instance, 'initialise')) {
+                $initialise |= $instance->initialise();
+            }
         }
 
         return (bool) $initialise;

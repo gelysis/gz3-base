@@ -1,32 +1,39 @@
 GZ3BASE
 =======
 
-This package is a optional module for Zend Framework 3.
-
 Zend Framework 3 Base Tweaks / Zend Framework 3 Basis Anpassungen
-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------
 
-Copyright ©2016, Andreas Gerhards <geolysis@zoho.com>.
+Copyright ©2016, Andreas Gerhards <ag.dialogue@yahoo.co.nz>.
 All rights reserved. / Alle Rechte vorbehalten. / Tous droits réservés.
 
 # LICENSE
+The Gz3Base module is open source and licensed as [BSD-3-Clause](http://opensource.org/licenses/BSD-3-Clause). 
 
-The Gz3Base module is open source and licensed as BSD-3-Clause (http://opensource.org/licenses/BSD-3-Clause). 
-Please consult [LICENSE.md] for further details.
+Please consult `LICENSE.md` for further details.
 
 # LIZENZ
-Das Gz3Base-Modul ist Open Source und unter der BSD-3-Klausel (http://opensource.org/licenses/BSD-3-Clause) lizensiert. 
-Bitte lesen sie [LICENSE.md] für weitergehende Informationen.
+Das Gz3Base-Modul ist Open Source und unter der [BSD-3-Klausel](http://opensource.org/licenses/BSD-3-Clause) lizensiert. 
 
-# RELEASE INFORMATION
-Gz3Base 0.9.2
-2016-12-10
+Bitte lesen sie `LICENSE.md` für weitergehende Informationen.
 
 # SYSTEM REQUIREMENTS
 Requires PHP 7.0.7 or later.
 
+# COMPONENTS
+
+# DESCRIPTION
+This package is a optional module for Zend Framework 3.
+
+# INSTALLATION
+* Use packagist dependency: `geolysis/gz3-base`.
+
 # QUESTIONS AND FEEDBACK
 Please contact the author.
 
+# RELEASE INFORMATION
+Gz3Base 0.9.3
+2016-12-18
+
 # UPDATES
-Please see [CHANGELOG.md].
+Please see `CHANGELOG.md`.
