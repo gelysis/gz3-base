@@ -3,7 +3,7 @@
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * @package Gz3Base\Entity
  * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
- * @copyright Copyright ©2016 Andreas Gerhards
+ * @copyright ©2016-2017, Andreas Gerhards - All rights reserved
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
@@ -207,7 +207,7 @@ abstract class AbstractEntity extends AbstractService
 
     /**
      * @param array $attributeData
-     * @return AbstractEntity $createModel
+     * @return AbstractEntity $modelCreated
      */
     public function create(array $data) : AbstractEntity
     {
@@ -218,8 +218,8 @@ abstract class AbstractEntity extends AbstractService
     }
 
     /**
-     * @param int $id
-     * @return AbstractEntity $readModel
+     * @param int $id  Expected > 0
+     * @return AbstractEntity $modelRead
      */
     public function read(int $id = null) : AbstractEntity
     {
@@ -308,7 +308,7 @@ abstract class AbstractEntity extends AbstractService
         if (is_null($value)) {
             $entity = $this;
             $message = 'Passed forbitten value '.var_export($value, true).' on "'.$attributeCode.'".';
-            $this->record('get_nmtd', RecordService::NOTICE, $message);
+            $this->record('get_ivd', RecordService::NOTICE, $message);
 
         }elseif (method_exists($this, $method)) {
             $entity = $this->$method($value);
@@ -317,12 +317,12 @@ abstract class AbstractEntity extends AbstractService
             $this->$code = $value;
             $entity = $this;
             $message = 'Attribute '.$code.' exists as property but has no getter on entity '.$this->getEntityType().'.';
-            $this->record('get_nmtd', RecordService::NOTICE, $message);
+            $this->record('get_png', RecordService::NOTICE, $message);
 
         }else{
             $entity = $this->setAttribute($attributeCode, $value);
             $message = 'Attribute '.$attributeCode.' has no setter on entity '.$this->getEntityType().'.';
-            $this->record('set_nodf', RecordService::WARN, $message);
+            $this->record('set_ang', RecordService::WARN, $message);
         }
 
         return $entity;

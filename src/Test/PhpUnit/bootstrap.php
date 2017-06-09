@@ -3,10 +3,9 @@
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * Generic phpunit bootstrap file
  * @package Gz3Base
- * @package Record
  * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause -
- * @copyright Copyright ©2016 Andreas Gerhards
+ * @copyright ©2016-2017, Andreas Gerhards - All rights reserved
  */
 
 declare(strict_types = 1);

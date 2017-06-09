@@ -4,7 +4,7 @@
  * @package Gz3Base
  * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
- * @copyright Copyright ©2016 Andreas Gerhards
+ * @copyright ©2016-2017, Andreas Gerhards - All rights reserved
  */
 
 namespace Gz3Base\Test\PhpUnit;

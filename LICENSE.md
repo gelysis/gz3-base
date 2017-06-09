@@ -1,8 +1,8 @@
 GZ3BASE
 =======
 
-Copyright ©2016, Andreas Gerhards <ag.dialogue@yahoo.co.nz>.
---------------------------------------------------------------
+Copyright ©2016-2017, Andreas Gerhards <ag.dialogue@yahoo.co.nz>.
+----------------------------------------------------------------
 All rights reserved.
 --------------------
 
@@ -29,8 +29,8 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-Copyright ©2016, Andreas Gerhards <ag.dialogue@yahoo.co.nz>.
---------------------------------------------------------------
+Copyright ©2016-2017, Andreas Gerhards <ag.dialogue@yahoo.co.nz>.
+----------------------------------------------------------------
 Alle Rechte vorbehalten.
 ------------------------
 

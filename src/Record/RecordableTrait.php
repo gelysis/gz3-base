@@ -3,7 +3,7 @@
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * @package Gz3Base\Model
  * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
- * @copyright Copyright ©2016 Andreas Gerhards
+ * @copyright ©2016-2017, Andreas Gerhards - All rights reserved
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
@@ -36,6 +36,19 @@ trait RecordableTrait
         }
 
         return $this->reflectionClass;
+    }
+
+    /**
+     * @deprecated  Will be removed in version 1.0.0
+     * @return mixed $this
+     */
+    public function setReflectionClass()
+    {
+        if (is_null($this->reflectionClass)) {
+            $this->reflectionClass = new ReflectionClass($this);
+        }
+
+        return $this;
     }
 
     /**

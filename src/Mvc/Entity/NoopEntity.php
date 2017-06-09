@@ -3,7 +3,7 @@
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * @package Gz3Base\Entity
  * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
- * @copyright Copyright ©2016 Andreas Gerhards
+ * @copyright ©2016-2017, Andreas Gerhards - All rights reserved
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
@@ -15,9 +15,11 @@ use Gz3Base\Mvc\Manager\AbstractManager;
 
 class NoopEntity extends AbstractEntity
 {
+
     /** @var AbstractActionController self::$controller */
     /** @var string self::$routeParameters */
 
     /** @var AbstractManager $this->manager */
     /** @var array $this->attributes */
+
 }

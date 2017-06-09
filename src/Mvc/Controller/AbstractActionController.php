@@ -3,7 +3,7 @@
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
  * @package Gz3Base\Controller
  * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
- * @copyright Copyright ©2016 Andreas Gerhards
+ * @copyright ©2016-2017, Andreas Gerhards - All rights reserved
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
@@ -11,6 +11,7 @@ declare(strict_types = 1);
 namespace Gz3Base\Mvc\Controller;
 
 use Gz3Base\Mvc\Entity\AbstractEntity;
+use Gz3Base\Mvc\Entity\NoopEntity;
 use Gz3Base\Mvc\Exception\ActionException;
 use Gz3Base\Mvc\Exception\BadMethodCallException;
 use Gz3Base\Mvc\Service\AbstractService;
@@ -20,7 +21,6 @@ use Gz3Base\Record\RecordableTrait;
 use Gz3Base\Record\Service\RecordService;
 use Zend\Mvc\Controller\AbstractActionController as ZendAbstractActionController;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Gz3Base\Mvc\Entity\NoopEntity;
 
 
 abstract class AbstractActionController extends ZendAbstractActionController
