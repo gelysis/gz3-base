@@ -18,7 +18,6 @@ use Gz3Base\Mvc\Service\AbstractService;
 use Gz3Base\Mvc\Service\ServiceInterface;
 use Gz3Base\Record\RecordableInterface;
 use Gz3Base\Record\RecordableTrait;
-use Gz3Base\Record\Service\RecordService;
 use Zend\Mvc\Controller\AbstractActionController as ZendAbstractActionController;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -33,7 +32,7 @@ abstract class AbstractActionController extends ZendAbstractActionController
     /** @var bool self::DEINIT_RECORDING */
     const DEINIT_RECORDING = true;
 
-    /** @var BaseService[] self::$services */
+    /** @var ServiceInterface[] self::$services */
     protected static $services = [];
 
     /** @var ServiceLocatorInterface $this->serviceLocator */
@@ -80,7 +79,7 @@ abstract class AbstractActionController extends ZendAbstractActionController
     }
 
     /**
-     * @return RecordService self::$services['record']
+     * @return \Gz3Base\Record\Service\RecordService self::$services['record']
      */
     protected function getRecordService() : ServiceInterface
     {
@@ -102,7 +101,7 @@ abstract class AbstractActionController extends ZendAbstractActionController
     }
 
     /**
-     * @return ConfigService self::$services['config']
+     * @return \ConfigService self::$services['config']
      */
     public function getConfigService() : AbstractService
     {

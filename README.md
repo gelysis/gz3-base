@@ -32,8 +32,8 @@ This package is a optional module for Zend Framework 3.
 Please contact the author.
 
 # RELEASE INFORMATION
-Gz3Base 0.9.4
-2017-06-10
+Gz3Base 0.9.5
+2017-06-11
 
 # UPDATES
 Please see `CHANGELOG.md`.

@@ -16,7 +16,7 @@ use Gz3Base\Mvc\Service\ServiceInterface;
 interface RecordableInterface
 {
 
-    /** @var ReflectionClass $this->reflectionClass */
+    /** @var \ReflectionClass $this->reflectionClass */
     /** @var string $this->recordIdPrefix */
     /** @var array $this->methodName */
     /** @var array $this->methodStart */

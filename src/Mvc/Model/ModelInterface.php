@@ -13,6 +13,7 @@ namespace Gz3Base\Mvc\Model;
 
 interface ModelInterface
 {
+
     /**
      * @return bool $isActive
      */

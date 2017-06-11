@@ -28,7 +28,6 @@ class Priorities implements FilterInterface
      * @todo: check if it works with a strict type hinting to array
      * @param  int[]|Traversable $priorities
      * @param  string $operator Comparison operator
-     * @return void
      * @throws InvalidArgumentException
      */
     public function __construct($priorities, string $operator = '')

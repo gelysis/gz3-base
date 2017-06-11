@@ -13,6 +13,7 @@ namespace Gz3Base;
 
 class Module extends AbstractModule
 {
+
     /** @var \ReflectionClass $this->reflection */
     /** @var string $this->namespace */
     /** @var string $this->directory */
@@ -22,7 +23,8 @@ class Module extends AbstractModule
      * {@inheritDoc}
      * @see \Gz3Base\AbstractModule::init()
      */
-    public function init() {}
+    public function init()
+    {}
 
     /**
      * {@inheritDoc}
@@ -33,7 +35,7 @@ class Module extends AbstractModule
         return [
             'Zend\Loader\StandardAutoloader'=>[
                 'namespaces'=>[
-                    __NAMESPACE__=>__DIR__.'/src/',
+                    __NAMESPACE__=>__DIR__.'/src/'
                 ]
             ]
         ];

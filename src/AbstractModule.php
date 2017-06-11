@@ -10,13 +10,13 @@
 declare(strict_types = 1);
 namespace Gz3Base;
 
-
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
 
 abstract class AbstractModule
 {
+
     /** @var \ReflectionClass $this->reflection */
     protected $reflection;
     /** @var string $this->namespace */
@@ -77,13 +77,16 @@ abstract class AbstractModule
     }
 
     /**
+     * Defines src/<Namespace> as standard code sub-directory
      * @return string[][][] $autoloaderConfig
      */
     public function getAutoloaderConfig() : array
     {
         $autoloderConfig = [
             'Zend\Loader\StandardAutoloader'=>[
-                'namespaces'=>[$this->getNamespace()=>$this->getDirectory().'/src/'.$this->getNamespace()]
+                'namespaces'=>[
+                    $this->getNamespace()=>$this->getDirectory().'/src/'.$this->getNamespace()
+                ]
             ]
         ];
 
@@ -91,6 +94,7 @@ abstract class AbstractModule
     }
 
     /**
+     * Includes config files in the following order: module.config.php, module.*.php, module.local.php
      * @return array $moduleConfig
      */
     public function getConfig() : array
@@ -101,13 +105,15 @@ abstract class AbstractModule
             $localConfig = $this->getDirectory().'/config/module.local.php';
 
             $handle = opendir($this->getDirectory().'/config');
-                while ($configFile = readdir($handle)) {
+            while ($configFile = readdir($handle)) {
                 $isModuleConfigFile = preg_match('#module\.(\w+)\.php#ism', $configFile, $match);
                 $includeModuleConfigFile = $isModuleConfigFile && !in_array($match[1], ['config', 'local']);
+
                 if ($includeModuleConfigFile) {
                     $moduleConfig = array_replace_recursive(
                         $moduleConfig,
-                        include $this->getDirectory().'/config/'.$configFile);
+                        include $this->getDirectory().'/config/'.$configFile
+                    );
                 }
             }
             closedir($handle);
@@ -116,7 +122,7 @@ abstract class AbstractModule
                 $localConfig = include $localConfig;
                 $moduleConfig = array_replace_recursive($moduleConfig, $localConfig);
             }
-        }else{
+        }else {
             throw new FileException('Configuration file '.$moduleConfig.' does not exist.');
         }
 

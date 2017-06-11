@@ -210,7 +210,7 @@ abstract class AbstractEntity extends AbstractService
      * @return AbstractEntity $modelCreated
      */
     public function create(array $data) : AbstractEntity
-    {
+   {
         $data['created_at'] = time(); // Done on the database - necessary here?
         $this->setAttributes($data);
 

@@ -13,7 +13,6 @@ namespace Gz3Base\Mvc\Manager;
 use Gz3Base\Mvc\Controller\AbstractActionController;
 use Gz3Base\Mvc\Service\AbstractService;
 use Gz3Base\Mvc\Service\ServiceInterface;
-use Gz3Base\Record\Service\RecordService;
 
 
 interface ManagerInterface
@@ -26,13 +25,13 @@ interface ManagerInterface
     public function setController(AbstractActionController $controller) : ManagerInterface;
 
     /**
-     * @return ConfigService $configService
+     * @return \ConfigService $configService
      */
     public function getConfigService() : AbstractService;
 
 
     /**
-     * @return RecordService $this->recordService
+     * @return \Gz3Base\Record\Service\RecordService $this->recordService
      */
     public function getRecordService() : ServiceInterface;
 

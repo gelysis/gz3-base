@@ -15,6 +15,7 @@ use Gz3Base\Mvc\Controller\AbstractActionController;
 
 interface ServiceInterface
 {
+
     /**
      * @param AbstractActionController $controller
      * @return mixed $this

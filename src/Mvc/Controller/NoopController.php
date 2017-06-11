@@ -23,7 +23,7 @@ class NoopController extends AbstractActionController
     /** @var bool self::DEINIT_RECORDING */
     const DEINIT_RECORDING = false;
 
-    /** @var BaseService[] self::$services */
+    /** @var ServiceInterface[] self::$services */
 
     /** @var ServiceLocatorInterface $this->serviceLocator */
     /** @var array $this->routeParameters */
