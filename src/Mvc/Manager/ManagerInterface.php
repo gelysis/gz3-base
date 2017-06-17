@@ -19,24 +19,24 @@ interface ManagerInterface
 {
 
     /**
+     *
      * @param AbstractActionController $controller
      * @return ManagerInterface
      */
     public function setController(AbstractActionController $controller) : ManagerInterface;
 
     /**
-     * @return \ConfigService $configService
+     * @return \Gz3Base\Mvc\Service\ConfigService $configService
      */
     public function getConfigService() : AbstractService;
 
-
     /**
-     * @return \Gz3Base\Record\Service\RecordService $this->recordService
+     * @return \Gz3Base\Record\Service\RecordService $recordService
      */
     public function getRecordService() : ServiceInterface;
 
     /**
-     * @return string $this->entityType
+     * @return string $entityType
      */
     public function getEntityType() : string;
 
@@ -69,7 +69,7 @@ interface ManagerInterface
     public function loadBy(string $field, $value) : array;
 
     /**
-     * @return bool $successfulCreate
+     * @return bool $successfullyCreated
      */
     protected function create() : bool;
 
@@ -81,22 +81,22 @@ interface ManagerInterface
     protected function read(string $field, $value) : array;
 
     /**
-     * @return bool $successfulUpdate
+     * @return bool $successfullyUpdated
      */
     protected function update() : bool;
 
     /**
-     * @return $successfulDelete
+     * @return $successfullyDeleted
      */
     public function delete() : bool;
 
     /**
-     * @return $successfulDeactivate
+     * @return $successfullyDeactivated
      */
     public function deactivate() : bool;
 
     /**
-     * @return $successfulArchive
+     * @return $successfullyArchived
      */
     public function archive() : bool;
 

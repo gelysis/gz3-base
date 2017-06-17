@@ -15,9 +15,11 @@ use Gz3Base\Record\RecordableTrait;
 use Zend\ServiceManager\Exception\ServiceNotFoundException as ZendServiceNotFoundException;
 
 
-class ServiceNotFoundException extends ZendServiceNotFoundException implements RecordableInterface
+class ServiceNotFoundException extends ZendServiceNotFoundException
+    implements RecordableInterface
 {
     use RecordableTrait;
+
 
     /**
      * {inheritDoc}

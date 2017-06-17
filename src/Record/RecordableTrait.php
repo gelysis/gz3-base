@@ -10,7 +10,9 @@
 declare(strict_types = 1);
 namespace Gz3Base\Record;
 
+use Gz3Base\Mvc\Service\ServiceTrait;
 use Gz3Base\Record\Service\RecordService;
+use Gz3Base;
 
 
 trait RecordableTrait
@@ -81,6 +83,7 @@ trait RecordableTrait
     }
 
     /**
+     *
      * @return string $this->recordIdPrefix
      */
     protected function getRecordIdPrefix() : string
@@ -106,10 +109,22 @@ trait RecordableTrait
      * [@param array $data]
      * @return bool $success
      */
-    public function record(string $id, int $priority, string $message, array $data = array()) : bool
+    public function record(string $id, int $priority, string $message, array $data = []) : bool
     {
         $recordId = $this->getRecordIdPrefix().$id;
         return $this->geRecordService()->record($recordId, $priority, $message, $data);
+    }
+
+    /**
+     * @todo  Check if there is a better way to implement this check
+     * @return bool $hasPrefix
+     */
+    protected function hasPrefix(string $method) : bool
+    {
+
+        $hasPrefix = in_array(strtolower(substr($method, 0, 3)), $methodPrefixes);
+
+        return $hasPrefix;
     }
 
     /**
@@ -122,7 +137,32 @@ trait RecordableTrait
             $methodName = $this->methodName;
             $methodName = array_pop($methodName);
         }
-        $recordId = strtolower(substr($methodName, 0, 3));
+
+        if (method_exists($this, 'getMethodPrefixes')) {
+            $methodPrefixes = $this->getMethodPrefixes();
+        }else {
+            $methodPrefixes = ServiceTrait::getDefaultMethodPrefixes();
+        }
+
+        $prefix = '';
+        if (is_array($methodPrefixes)) {
+            foreach ($methodPrefixes as $methodPrefix) {
+                if (strtolower(substr($method, 0, strlen($prefix))) == $prefix) {
+                    $prefix = $methodPrefix;
+                    break;
+                }
+            }
+        }
+
+        if (strlen($prefix) > 0) {
+            $method = substr($method, strlen($prefix));
+            $recordId = substr($methodName, 0, 1).substr(
+                strlen(preg_replace('#[a-z]#', '', $method)) > 1 ? preg_replace('#[a-z]#', '', $method) : $method,
+                0, 2
+            );
+        }else {
+            $recordId = strtolower(substr($methodName, 0, 3));
+        }
 
         return $recordId;
     }
@@ -139,7 +179,7 @@ trait RecordableTrait
             $seconds = ceil($seconds * pow(10, $decimals)) / pow(10, $decimals);
         }elseif ($seconds < 30) {
             $seconds = ceil($seconds * 2) / 2;
-        }else{
+        }else {
             $seconds = ceil($seconds);
         }
 
@@ -167,7 +207,7 @@ trait RecordableTrait
 
         if (count($formattedTimes) == 0) {
             $formattedSeconds = '0.000s';
-        }else{
+        }else {
             $formattedSeconds = implode(', ', $formattedTimes);
         }
         unset($formattedTimes);
@@ -176,6 +216,7 @@ trait RecordableTrait
     }
 
     /**
+     *
      * @return bool $useInitialiseRecording
      */
     abstract protected function useInitialiseRecording() : bool;
@@ -191,9 +232,9 @@ trait RecordableTrait
 
         $recordId = $this->getAbbreviatedMethodName($methodName).'_sta';
         $message = $methodName.' initialised at '.strftime('%H:%M:%S').' on '.strftime('%d.%m.%Y');
-        $data = array(
+        $data = [
             'init'=>current($this->methodStart)
-        );
+        ];
 
         if ($this->useInitialiseRecording()) {
             $this->record($recordId, RecordService::DEVEL, $message, $data);
@@ -216,16 +257,16 @@ trait RecordableTrait
     {
         $end = microtime(true);
 
-        if (!count($this->methodName) || !count($this->methodStart)) {
+        if (! count($this->methodName) || ! count($this->methodStart)) {
             $runtime = 0;
             $recordId = $this->getAbbreviatedMethodName($methodName).'_noi';
             $priority = RecordService::WARN;
             $message = '. Could not find init information.';
-            $data = array(
+            $data = [
                 'method name'=>current($this->methodName),
                 'method start'=>current($this->methodStart)
-            );
-        }else{
+            ];
+        }else {
             $start = array_pop($this->methodStart);
             $name = array_pop($this->methodName);
 
@@ -235,14 +276,14 @@ trait RecordableTrait
                 $recordId = $this->getAbbreviatedMethodName($methodName).'_ier';
                 $priority = RecordService::WARN;
                 $message = '. Could only find init information of '.$name.'.';
-            }else{
+            }else {
                 $recordId = $this->getAbbreviatedMethodName($methodName).'_end';
                 $priority = RecordService::INFO;
                 $message = '. Runtime was '.$this->formattedSeconds($runtime).'.';
             }
-            $data = array(
+            $data = [
                 'runtime'=>$runtime
-            );
+            ];
         }
 
         if ($forced) {

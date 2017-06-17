@@ -17,10 +17,16 @@ use Gz3Base\Mvc\Controller\NoopController;
 
 trait ServiceTrait
 {
+
     /** @var AbstractActionController self::$controller */
     protected static $controller = null;
     /** @var string[] self::$routeParameters */
     protected static $routeParameters;
+    /** @var string[] self::$defaultMethodPrefixes */
+    protected static $defaultMethodPrefixes = ['is', 'set', 'get', 'add', 'has'];
+    /** @var string[] $this->additionalMethodPrefixes */
+    protected $additionalMethodPrefixes = [];
+
 
     /**
      * @param AbstractActionController $controller
@@ -29,6 +35,7 @@ trait ServiceTrait
     public function setController(AbstractActionController $controller) : AbstractService
     {
         self::$controller = $controller;
+
         return $this;
     }
 
@@ -39,7 +46,7 @@ trait ServiceTrait
     {
         if (is_null(self::$controller)) {
             $controller = new NooptController();
-        }else{
+        }else {
             $controller = self::$controller;
         }
 
@@ -56,6 +63,35 @@ trait ServiceTrait
         }
 
         return self::$routeParameters;
+    }
+
+    /**
+     * @param string $prefix
+     * @return bool $successfulAdded
+     */
+    protected function addMethodPrefixes(string $prefix) : bool
+    {
+        $this->methodPrefixes[] = $prefix;
+
+        return (in_array($prefix, $this->methodPrefixes));
+    }
+
+    /**
+     * @return string[] self::defaultMethodPrefixes
+     */
+    public static function getDefaultMethodPrefixes() : array
+    {
+        return self::$defaultMethodPrefixes;
+    }
+
+    /**
+     * @return string[] $methodPrefixes
+     */
+    protected function getMethodPrefixes() : array
+    {
+        $methodPrefixes = array_unique(array_merge(self::getDefaultMethodPrefixes(), $this->additionalMethodPrefixes));
+
+        return $methodPrefixes;
     }
 
 }

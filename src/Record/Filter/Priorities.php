@@ -18,16 +18,18 @@ use Zend\Log\Filter\FilterInterface;
 
 class Priorities implements FilterInterface
 {
+
     /** @var int[] $this->priorities */
     protected $priorities;
+
     /** @var string $this->operator */
     protected $operator;
 
     /**
      * Filter recording only certain priorities.
-     * @todo: check if it works with a strict type hinting to array
-     * @param  int[]|Traversable $priorities
-     * @param  string $operator Comparison operator
+     * @todo  Check if it works with a strict type hinting to array
+     * @param int[]|Traversable $priorities
+     * @param string $operator  Comparison operator
      * @throws InvalidArgumentException
      */
     public function __construct($priorities, string $operator = '')
@@ -44,17 +46,11 @@ class Priorities implements FilterInterface
             $valid = $this->arePrioriesValid($priorities);
             $valid &= $this->isOperatorValid($operator);
 
-            if (!$valid) {
-                throw new InvalidArgumentException(sprintf(
-                    'Priorities filter data is not valid: $priorties = %s, $operator = %s.',
-                    var_export($priorities, true), var_export($operator, true)
-                ));
+            if (! $valid) {
+                throw new InvalidArgumentException(sprintf('Priorities filter data is not valid: $priorties = %s, $operator = %s.', var_export($priorities, true), var_export($operator, true)));
             }
-        }else{
-            throw new InvalidArgumentException(sprintf(
-                'Filter constructor did not receive valid priorties data but %s.',
-                var_export($priorities, true)
-            ));
+        }else {
+            throw new InvalidArgumentException(sprintf('Filter constructor did not receive valid priorties data but %s.', var_export($priorities, true)));
         }
     }
 
@@ -72,18 +68,16 @@ class Priorities implements FilterInterface
 
         if ($arePrioritiesValid) {
             $this->priorities = $priorities;
-        }else{
+        }else {
             $this->priorities = null;
-            throw new InvalidArgumentException(sprintf(
-                'Filter priorities have to be an array of valid numbers, received %s.',
-                var_export($priorities, true)
-            ));
+            throw new InvalidArgumentException(sprintf('Filter priorities have to be an array of valid numbers, received %s.', var_export($priorities, true)));
         }
 
         return (bool) $arePrioritiesValid;
     }
 
     /**
+     *
      * @param string $operator
      * @throws Exception\InvalidArgumentException
      * @return bool $isOperatorValid
@@ -119,7 +113,7 @@ class Priorities implements FilterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      * @see \Zend\Log\Filter\FilterInterface::filter()
      */
     public function filter(array $event)

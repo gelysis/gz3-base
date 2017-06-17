@@ -28,12 +28,17 @@ interface RecordableInterface
     public function getRecordService() : ServiceInterface;
 
     /**
+     * @return RecordableInterface $this
+     */
+    public function setReflectionClass();
+
+    /**
      * @param int $id
      * @param string $priority
      * @param string $message
      * @param array $data
      * @return bool $success
      */
-    public function record(string $id, int $priority, string $message, array $data = array()) : bool;
+    public function record(string $id, int $priority, string $message, array $data = []) : bool;
 
 }

@@ -15,7 +15,6 @@ use Gz3Base\Mvc\Service\AbstractService;
 use Gz3Base\Mvc\Service\ConfigService;
 use Gz3Base\Mvc\Service\ServiceInterface;
 use Gz3Base\Record\Service\AbstractRecordService;
-
 use Zend\ServiceManager\Initializer\InitializerInterface;
 use Interop\Container\ContainerInterface;
 
@@ -25,9 +24,8 @@ class Initialiser implements InitializerInterface
 
     protected static $configuration = null;
 
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      * @see \Zend\ServiceManager\Initializer\InitializerInterface::__invoke()
      */
     public function __invoke(ContainerInterface $container, $instance)

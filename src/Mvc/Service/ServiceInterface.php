@@ -18,13 +18,8 @@ interface ServiceInterface
 
     /**
      * @param AbstractActionController $controller
-     * @return mixed $this
+     * @return AbstractService $this
      */
     public function setController(AbstractActionController $controller) : AbstractService;
-
-    /**
-     * @return AbstractActionController $controller
-     */
-    protected function getController() : AbstractActionController;
 
 }

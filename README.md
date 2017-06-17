@@ -4,7 +4,7 @@ GZ3BASE
 Zend Framework 3 Base Tweaks / Zend Framework 3 Basis Anpassungen
 -----------------------------------------------------------------
 
-Copyright ©2016, Andreas Gerhards <ag.dialogue@yahoo.co.nz>.
+Copyright ©2016-2017, Andreas Gerhards <ag.dialogue@yahoo.co.nz>.
 All rights reserved. / Alle Rechte vorbehalten. / Tous droits réservés.
 
 # LICENSE
@@ -32,8 +32,8 @@ This package is a optional module for Zend Framework 3.
 Please contact the author.
 
 # RELEASE INFORMATION
-Gz3Base 0.9.5
-2017-06-11
+Gz3Base 0.9.6
+2017-06-17
 
 # UPDATES
 Please see `CHANGELOG.md`.

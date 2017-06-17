@@ -20,10 +20,13 @@ abstract class AbstractService implements ServiceInterface, RecordableInterface
 {
     use ServiceTrait, RecordableTrait;
 
+
     /** @var AbstractActionController self::$controller */
     /** @var string[] self::$routeParameters */
 
+    /** @var string[] $this->methodPrefixes */
     /** @var string|null $this->recordIdPrefix */
+
 
     /**
      * @return RecordService self::$controller->getRecordService()
@@ -36,10 +39,10 @@ abstract class AbstractService implements ServiceInterface, RecordableInterface
     /**
      * @return bool $useInitialiseRecording
      */
-     protected function useInitialiseRecording()
-     {
-         return false;
-     }
+    protected function useInitialiseRecording()
+    {
+        return false;
+    }
 
     /**
      * @return bool $useDeinitialiseRecording

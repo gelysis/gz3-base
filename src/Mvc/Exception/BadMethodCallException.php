@@ -15,9 +15,11 @@ use Gz3Base\Record\RecordableTrait;
 use Zend\Mvc\Exception\BadMethodCallException as ZendBadMethodCallException;
 
 
-class BadMethodCallException extends ZendBadMethodCallException implements RecordableInterface
+class BadMethodCallException extends ZendBadMethodCallException
+    implements RecordableInterface
 {
     use RecordableTrait;
+
 
     /**
      * {inheritDoc}

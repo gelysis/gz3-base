@@ -3,6 +3,10 @@ GZ3BASE
 
 # CHANGELOG
 
+### 0.9.6 (2017-06-17)
+* Added functionality to the abstract entity class
+* Overhaul/cleanup
+
 ### 0.9.5 (2017-06-11)
 * Minor tweaks
 * phpDoc cleanup
@@ -88,57 +92,3 @@ Initial commit containing the following files:
 * src/Test/PhpUnit/TestCase.php,
 * src/Test/PhpUnit/TestInitialiser.php,
 * src/Test/PhpUnit/bootstrap.php
-=======
-### 1.0.0 (2016-09-14)
-
-Initial commit containing the following files:
-
-> CHANGELOG.md
-> LICENSE.md,
-> Module.php,
-> README.md,
-> config/module.config.php,
-> config/module.service.php,
-> src/AbstractModule.php,
-> src/Mvc/Controller/AbstractActionController.php,
-> src/Mvc/Controller/NoopController.php,
-> src/Mvc/Entity/AbstractEntity.php,
-> src/Mvc/Entity/NoopEntity.php,
-> src/Mvc/Exception/ActionException,
-> src/Mvc/Exception/BadEntityCallException,
-> src/Mvc/Exception/BadMethodCallException,
-> src/Mvc/Exception/BaseException,
-> src/Mvc/Exception/ConfigException.php,
-> src/Mvc/Exception/DomainException,
-> src/Mvc/Exception/FileException,
-> src/Mvc/Exception/InvalidArgumentEception,
-> src/Mvc/Exception/InvalidControllerException,
-> src/Mvc/Exception/InvalidPluginException,
-> src/Mvc/Exception/MappingException,
-> src/Mvc/Exception/MissingLocatorException,
-> src/Mvc/Exception/PersistanceException,
-> src/Mvc/Exception/PropertyNotSetException,
-> src/Mvc/Exception/RuntimeException,
-> src/Mvc/Exception/ServiceNotFoundException,
-> src/Mvc/Exception/WrongTypeException,
-> src/Mvc/Manager/AbstractManager.php,
-> src/Mvc/Manager/ManagerInterface.php,
-> src/Mvc/Manager/NoopManager.php,
-> src/Mvc/Model/ModelInterface.php,
-> src/Service/AbstractService.php,
-> src/Service/ConfigService.php,
-> src/Service/NoopService.php,
-> src/Service/ServiceInterface.php,
-> src/Service/ServiceTrait.php,
-> src/Record/Filter/Priorities.php,
-> src/Record/RecordableInterface.php,
-> src/Record/RecordableTrait.php,
-> src/Record/Service/RecordService.php,
-> src/ServiceManager/Initialiser.php,
-> src/Test/PhpUnit/Controller/ConsoleControllerTestCase.php,
-> src/Test/PhpUnit/Controller/ControllerTestCaseTrait.php,
-> src/Test/PhpUnit/Controller/HttpControllerTestCase.php,
-> src/Test/PhpUnit/TestCase.php,
-> src/Test/PhpUnit/TestInitialiser.php,
-> src/Test/PhpUnit/bootstrap.php
->>>>>>> dev

@@ -15,9 +15,11 @@ use Gz3Base\Record\RecordableTrait;
 use Zend\Mvc\Exception\RuntimeException as ZendRuntimeException;
 
 
-class RuntimeException extends ZendRuntimeException implements RecordableInterface
+class RuntimeException extends ZendRuntimeException
+    implements RecordableInterface
 {
     use RecordableTrait;
+
 
     /**
      * {inheritDoc}

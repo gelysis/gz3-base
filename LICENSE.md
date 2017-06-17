@@ -2,7 +2,7 @@ GZ3BASE
 =======
 
 Copyright ©2016-2017, Andreas Gerhards <ag.dialogue@yahoo.co.nz>.
-----------------------------------------------------------------
+-----------------------------------------------------------------
 All rights reserved.
 --------------------
 
@@ -30,7 +30,7 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 Copyright ©2016-2017, Andreas Gerhards <ag.dialogue@yahoo.co.nz>.
-----------------------------------------------------------------
+-----------------------------------------------------------------
 Alle Rechte vorbehalten.
 ------------------------
 

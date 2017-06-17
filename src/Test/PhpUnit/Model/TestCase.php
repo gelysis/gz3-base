@@ -23,7 +23,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     public function setUp()
@@ -32,7 +32,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         try {
             $serviceToTest = strtolower(strstr($reflectionClass->getShortName(), 'Test', true));
             $this->objectToTest = $this->getService($serviceToTest);
-        }catch (ServiceNotFoundException $exception) {
+        } catch (ServiceNotFoundException $exception) {
             $serviceToTest = str_replace('Test', '', $reflectionClass->getName());
             $this->objectToTest = new $serviceToTest();
         }

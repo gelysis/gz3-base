@@ -15,9 +15,11 @@ use Gz3Base\Record\RecordableTrait;
 use Zend\Mvc\Exception\InvalidArgumentException as ZendInvalidArgumentException;
 
 
-class InvalidArgumentException extends ZendInvalidArgumentException implements RecordableInterface
+class InvalidArgumentException extends ZendInvalidArgumentException
+    implements RecordableInterface
 {
     use RecordableTrait;
+
 
     /**
      * {inheritDoc}

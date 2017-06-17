@@ -22,4 +22,19 @@ class NoopEntity extends AbstractEntity
     /** @var AbstractManager $this->manager */
     /** @var array $this->attributes */
 
+
+    /**
+     * @param int $id  Excepted values > 0
+     * @return AbstractEntity $readModel
+     */
+    public function read(int $id = 0) : AbstractEntity
+    {
+        $id = min(1, intval($id));
+
+        $this->attributes = ['id'=>$id];
+        $this->activate();
+
+        return $this;
+    }
+
 }

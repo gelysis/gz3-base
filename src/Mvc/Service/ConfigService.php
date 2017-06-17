@@ -17,8 +17,10 @@ use Gz3Base\Mvc\Exception\WrongTypeException;
 
 class ConfigService extends AbstractService
 {
+
     /** @var array|null $this->configuration */
     protected $configuration = [];
+
 
     /**
      * @param array $configuration
@@ -39,18 +41,14 @@ class ConfigService extends AbstractService
         if (is_null($this->configuration)) {
             throw new PropertyNotSetException('Configuration array not set.');
             $configurationDetails = [];
-
         }elseif (is_null($area)) {
             $configurationDetails = $this->configuration;
-
         }elseif (array_key_exists($area, $this->configuration)) {
             $configurationDetails = $this->configuration[$area];
-
-        }else{
-            $this->record('wrg_area', RecordService::ERROR,
-                'Configuration area '.$area.' is not existing.',
-                ['config keys'=>array_keys($this->configuration)]
-            );
+        }else {
+            $this->record('wrg_area', RecordService::ERROR, 'Configuration area '.$area.' is not existing.', [
+                'config keys'=>array_keys($this->configuration)
+            ]);
             $configurationDetails = [];
         }
 
@@ -77,7 +75,7 @@ class ConfigService extends AbstractService
         if (strlen($database) > 0) {
             if (isset($dbConfiguration[$database]) && is_array($dbConfiguration[$database])) {
                 $dbDetails = $dbConfiguration[$database];
-            }else{
+            }else {
                 $fallback = true;
             }
         }
@@ -86,9 +84,9 @@ class ConfigService extends AbstractService
 
         if (is_null($dbDetails) && $hasDefaultDatabaseDetails) {
             $defaultDatabase = $dbConfiguration['default'];
-            if (!is_string($defaultDatabase)) {
+            if (! is_string($defaultDatabase)) {
                 throw new WrongTypeException('Database default connection is not a string.');
-            }elseif (!array_key_exists($defaultDatabase, $dbConfiguration)) {
+            }elseif (! array_key_exists($defaultDatabase, $dbConfiguration)) {
                 $message = 'Database configuration has no valid default ('.$defaultDatabase.') database defined.';
                 throw new PropertyNotSetException($message);
             }elseif (is_array($dbConfiguration[$defaultDatabase])) {
@@ -101,7 +99,7 @@ class ConfigService extends AbstractService
                 $message = 'Configuration has not been set.';
             }elseif ($fallback) {
                 $message = 'Neither default nor database key `'.$database.'` exists.';
-            }else{
+            }else {
                 $message = 'Default database key does not exst.';
             }
             $message .= ' Exception thrown in '.get_called_class().'.';
@@ -111,11 +109,16 @@ class ConfigService extends AbstractService
             $recordId .= '_fbk';
             $priority = RecordService::ERROR;
             $message = 'Used default key due to specific database details not existing.';
-            $data = ['default'=>$defaultDatabase, 'database'=>$database];
-        }else{
+            $data = [
+                'default'=>$defaultDatabase,
+                'database'=>$database
+            ];
+        }else {
             $priority = RecordService::DEBUG;
             $message = 'Retrieved database details.';
-            $data = ['database'=>$database];
+            $data = [
+                'database'=>$database
+            ];
         }
         $this->record($recordId, $priority, $message, $data);
 
@@ -129,7 +132,7 @@ class ConfigService extends AbstractService
     {
         if (array_key_exists($area, $this->configuration)) {
             $area = $this->configuration[$area];
-        }else{
+        }else {
             $area = [];
         }
 

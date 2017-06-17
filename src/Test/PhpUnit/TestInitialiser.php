@@ -7,6 +7,7 @@
  * @copyright ©2016-2017, Andreas Gerhards - All rights reserved
  */
 
+declare(strict_types = 1);
 namespace Gz3Base\Test\PhpUnit;
 
 use Zend\Loader\StandardAutoloader;
@@ -16,8 +17,10 @@ use Zend\ServiceManager\ServiceManager;
 
 class TestInitialiser
 {
+
     /** @var ServiceManager self::$serviceManager */
     protected static $serviceManager;
+
 
     /**
      * @param array $config
@@ -25,7 +28,7 @@ class TestInitialiser
      */
     public static function init(array $config, array $moduleTestPaths)
     {
-        $modules = array();
+        $modules = [];
         $loader = new StandardAutoloader();
 
         foreach ($moduleTestPaths as $module=>$path) {

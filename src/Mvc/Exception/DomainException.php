@@ -15,9 +15,11 @@ use Gz3Base\Record\RecordableTrait;
 use Zend\Mvc\Exception\DomainException as ZendDomainException;
 
 
-class DomainException extends ZendDomainException implements RecordableInterface
+class DomainException extends ZendDomainException
+    implements RecordableInterface
 {
     use RecordableTrait;
+
 
     /**
      * {inheritDoc}

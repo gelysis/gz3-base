@@ -7,6 +7,7 @@
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
  */
 
+declare(strict_types = 1);
 namespace Gz3Base\Test\Controller;
 
 
@@ -30,9 +31,7 @@ trait ControllerTestCaseTrait
     public function setUp()
     {
         parent::setUp();
-        $this->setApplicationConfig(
-            $this->getApplicationTestConfiguration()
-        );
+        $this->setApplicationConfig($this->getApplicationTestConfiguration());
     }
 
 }

@@ -23,7 +23,9 @@ use Propel\Runtime\Map\TableMap;
 abstract class AbstractManager implements ManagerInterface
 {
 
+    /** @var bool self::DELETE */
     const DELETE = false;
+    /** @var string self::ARCHIVED_TABLE_PREFIX */
     const ARCHIVED_TABLE_PREFIX = 'archived_';
 
     /** @var AbstractActionController self::$controller */
@@ -73,7 +75,7 @@ abstract class AbstractManager implements ManagerInterface
     }
 
     /**
-     * @return AbstractService  $recordService
+     * @return AbstractService $recordService
      */
     protected function getRecordService() : AbstractService
     {
@@ -104,7 +106,7 @@ abstract class AbstractManager implements ManagerInterface
     {
         if ($this->isPersistent) {
             $success = $this->update();
-        }else{
+        }else {
             $success = $this->create();
         }
         $this->isPersistent = $this->isPersistent || $success;
@@ -137,7 +139,9 @@ abstract class AbstractManager implements ManagerInterface
     protected function create() : bool
     {
         $insert = $this->sql->insert($this->getTablename());
-        $id = $this->adapter->getDriver()->getConnection()->getLastGeneratedValue();
+        $id = $this->adapter->getDriver()
+            ->getConnection()
+            ->getLastGeneratedValue();
         $this->load($id);
 
         $success = true;
@@ -156,7 +160,9 @@ abstract class AbstractManager implements ManagerInterface
         // @todo
         $this->isPersistent = (is_array($row) && count($row) > 0);
 
-        $resultSet = $this->tableGateway->select(array($field=>$value));
+        $resultSet = $this->tableGateway->select([
+            $field=>$value
+        ]);
         $this->rowGateway = $resultSet->current();
 
         return $this->rowGateway->getArrayCopy();
@@ -178,9 +184,8 @@ abstract class AbstractManager implements ManagerInterface
     {
         if (static::DELETE) {
             $sucess = (bool) $this->rowGateway->delete();
-        }else{
-            $success = false;
-        }
+        }else {
+            $success = false;        }
 
         return $success;
     }
@@ -193,7 +198,7 @@ abstract class AbstractManager implements ManagerInterface
         if (array_key_exists('active', $this->attributeTypes)) {
             $this->data['active'] = false;
             $success = $this->save();
-        }else{
+        }else {
             $success = false;
         }
 
@@ -207,16 +212,16 @@ abstract class AbstractManager implements ManagerInterface
     {
         if ($this->isArchivedTable()) {
             // @todo: Replace pseudo code
-            $archived = !$this->sql->create($this->getArchivedTablename());
+            $archived = ! $this->sql->create($this->getArchivedTablename());
             if ($archived) {
                 $archived = $archived && $this->delete();
                 if ($archived) {
                     $duplicate = false;
-                }else{
-                    $duplicate = !$this->sql->delete($this->getArchivedTablename());
+                }else {
+                    $duplicate = ! $this->sql->delete($this->getArchivedTablename());
                 }
             }
-        }else{
+        }else {
             $archived = false;
         }
 
@@ -224,7 +229,7 @@ abstract class AbstractManager implements ManagerInterface
             $this->record('arc_suc', RecordService::INFO, 'Archived entity successfully.', $this->data);
         }elseif ($duplicate) {
             $this->record('arc_err', RecordService::ERROR, 'Archiving ended up with duplicate data sets. ', $this->data);
-        }else{
+        }else {
             $this->record('arc_fai', RecordService::ERROR, 'Archiving failed.', $this->data);
         }
 

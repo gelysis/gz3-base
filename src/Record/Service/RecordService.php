@@ -20,28 +20,31 @@ class RecordService extends Logger implements ServiceInterface
 {
     use ServiceTrait;
 
+    /** @var self::EMERG  System is unusable */
+    /** @var self::ALERT  Action must be taken immediately */
+    /** @var self::CRIT  Critical conditions */
+    /** @var self::ERR  Error conditions */
+    /** @var self::ERROR */
+    const ERROR = self::ERR;
+    /** @var self::WARN  Warning conditions */
+    /** @var self::NOTICE  Normal, but significant condition */
+    /** @var self::INFO  Informational messages */
+    /** @var self::DEBUG  Debug messages */
+    /** @var self::DETAIL  More detailed debug messages */
+    const DETAIL = 8;
+    /** @var self::DEVEL  Development message */
+    const DEVEL = 9;
+    /** @var self::INVALID_PRIORITY_LABEL */
+    const INVALID_PRIORITY_LABEL = 'INVD';
+
     /** @var string self::$threadIdentifier */
     protected static $threadIdentifier = null;
     /** @var AbstractActionController self::$controller */
-
-    /** @static EMERG = 0; // System is unusable
-     * @static ALERT = 1; // Action must be taken immediately
-     * @static CRIT = 2; // Critical conditions
-     * @static ERR = 3; // Error conditions */
-    const ERROR = self::ERR;
-    /** @static WARN = 4; // Warning conditions
-     * @static NOTICE = 5; // Normal, but significant, condition
-     * @static INFO = 6; // Informational message
-     * @static DEBUG = 7; // Debug-level message */
-    const DETAIL = 8; // More detailed debug-level message
-    const DEVEL = 9; // Development message
-
-    const INVALID_PRIORITY_LABEL = 'INVD';
-
     /** @var int[] self::$errorPriorityMap */
-    /** @var bool|false self::$registeredErrorHandler */    /**
-    /** @var bool|false self::$registeredFatalErrorShutdownFunction */
+    /** @var bool|false self::$registeredErrorHandler */
+    /** @var bool|false self::$registeredFatalErrorShutdownFunction
     /** @var bool|false self::$registeredExceptionHandler */
+
     /** @var string[] $this->priorities */
     /** @var string[] $this->gz3Priorities */
     protected $gz3Priorities = [
@@ -53,7 +56,7 @@ class RecordService extends Logger implements ServiceInterface
     /** @var WriterPluginManager $this->writerPlugins */
     /** @var SplPriorityQueue $this->processors */
     /** @var ProcessorPluginManager $this->processorPlugins */
-
+    /** @var string[] $this->methodPrefixes */
 
     /**
      * Accepted option keys:
@@ -71,8 +74,8 @@ class RecordService extends Logger implements ServiceInterface
         $this->priorities = array_replace($this->priorities, $this->gz3Priorities);
     }
 
-
     /**
+     *
      * @param string $threadIdentifier
      * @return RecordService $this
      */
@@ -86,6 +89,7 @@ class RecordService extends Logger implements ServiceInterface
     }
 
     /**
+     *
      * @param int $priority
      * @return bool $isValidPriority
      */
@@ -95,6 +99,7 @@ class RecordService extends Logger implements ServiceInterface
     }
 
     /**
+     *
      * @param int $priority
      * @return bool $isValidPriorityLabel
      */
@@ -104,6 +109,7 @@ class RecordService extends Logger implements ServiceInterface
     }
 
     /**
+     *
      * @param string $id
      * @param int $priority
      * @param string $message
@@ -113,7 +119,7 @@ class RecordService extends Logger implements ServiceInterface
     {
         if (self::isValidPriority($priority)) {
             $priorityLabel = self::$priorities[$priority];
-        }else{
+        }else {
             $priorityLabel = self::INVALID_PRIORITY_LABEL;
         }
         $logMessage = '['.str_pad($priorityLabel.':'.$id.']', 24).' '.$message;
@@ -122,6 +128,7 @@ class RecordService extends Logger implements ServiceInterface
     }
 
     /**
+     *
      * @param int $id
      * @param string $priority
      * @param string $message

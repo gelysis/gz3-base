@@ -18,9 +18,6 @@ use Gz3Base\Mvc\Service\AbstractService;
 class NoopManager extends AbstractManager
 {
 
-    /** @static DELETE = false */
-    /** @static ARCHIVED_TABLE_PREFIX = 'archived_' */
-
     /** @var AbstractActionController self::$controller */
 
     /** @var string $this->entityType */
@@ -121,5 +118,4 @@ class NoopManager extends AbstractManager
     {
         return false;
     }
-
 }
