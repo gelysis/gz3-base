@@ -18,6 +18,9 @@ use Gz3Base;
 trait RecordableTrait
 {
 
+    /** @var bool self::INIT_RECORDING : Essential implementation */
+    /** @var bool self::DEINIT_RECORDING : Essential implementation */
+
     /** @var \ReflectionClass|null $this->reflectionClass */
     protected $reflectionClass = null;
     /** @var string[] $this->methodName */
@@ -216,10 +219,12 @@ trait RecordableTrait
     }
 
     /**
-     *
      * @return bool $useInitialiseRecording
      */
-    abstract protected function useInitialiseRecording() : bool;
+    protected function useInitialiseRecording() : bool
+    {
+        return static::INIT_RECORDING;
+    }
 
     /**
      * @param string $methodName
@@ -246,7 +251,10 @@ trait RecordableTrait
     /**
      * @return bool $useDeinitialiseRecording
      */
-    abstract protected function useDeinitialiseRecording() : bool;
+    protected function useDeinitialiseRecording() : bool
+    {
+        return static::DEINIT_RECORDING;
+    }
 
     /**
      * @param string $methodName

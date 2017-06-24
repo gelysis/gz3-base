@@ -20,23 +20,9 @@ class BadMethodCallException extends ZendBadMethodCallException
 {
     use RecordableTrait;
 
-
-    /**
-     * {inheritDoc}
-     * @see \Gz3Base\Record\RecordableTrait::useInitialiseRecording()
-     */
-    protected function useInitialiseRecording()
-    {
-        return false;
-    }
-
-    /**
-     * {inheritDoc}
-     * @see \Gz3Base\Record\RecordableTrait::useDeinitialiseRecording()
-     */
-    protected function useDeinitialiseRecording()
-    {
-        return false;
-    }
+    /** @var bool self::INIT_RECORDING */
+    const INIT_RECORDING = false;
+    /** @var bool self::DEINIT_RECORDING */
+    const DEINIT_RECORDING = false;
 
 }

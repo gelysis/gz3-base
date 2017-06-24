@@ -3,6 +3,9 @@ GZ3BASE
 
 # CHANGELOG
 
+### 0.9.7 (2017-06-24)
+* Equalised logging approach on init and deinit
+
 ### 0.9.6 (2017-06-17)
 * Added functionality to the abstract entity class
 * Overhaul/cleanup

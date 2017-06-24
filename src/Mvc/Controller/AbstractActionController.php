@@ -140,22 +140,6 @@ abstract class AbstractActionController extends ZendAbstractActionController
     }
 
     /**
-     * @return bool $useInitialiseRecording
-     */
-    protected function useInitialiseRecording() : bool
-    {
-        return static::INIT_RECORDING;
-    }
-
-    /**
-     * @return bool $useDeinitialiseRecording
-     */
-    protected function useDeinitialiseRecording() : bool
-    {
-        return static::DEINIT_RECORDING;
-    }
-
-    /**
      * @return mixed $invokeAction
      */
     protected function invokeAction()
