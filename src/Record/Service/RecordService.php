@@ -23,8 +23,7 @@ class RecordService extends Logger implements ServiceInterface
     /** @var self::EMERG  System is unusable */
     /** @var self::ALERT  Action must be taken immediately */
     /** @var self::CRIT  Critical conditions */
-    /** @var self::ERR  Error conditions */
-    /** @var self::ERROR */
+    /** @var self::ERROR = self::ERR  Error conditions */
     const ERROR = self::ERR;
     /** @var self::WARN  Warning conditions */
     /** @var self::NOTICE  Normal, but significant condition */
@@ -48,7 +47,7 @@ class RecordService extends Logger implements ServiceInterface
     /** @var string[] $this->priorities */
     /** @var string[] $this->gz3Priorities */
     protected $gz3Priorities = [
-        self::ERR=>'ERROR',
+        self::ERROR=>'ERROR',
         self::DETAIL=>'DETAIL',
         self::DEVEL=>'DEVEL'
     ];
@@ -57,6 +56,7 @@ class RecordService extends Logger implements ServiceInterface
     /** @var SplPriorityQueue $this->processors */
     /** @var ProcessorPluginManager $this->processorPlugins */
     /** @var string[] $this->methodPrefixes */
+
 
     /**
      * Accepted option keys:
@@ -75,7 +75,7 @@ class RecordService extends Logger implements ServiceInterface
     }
 
     /**
-     *
+     * Set self::$threadIdentifier
      * @param string $threadIdentifier
      * @return RecordService $this
      */
@@ -89,7 +89,6 @@ class RecordService extends Logger implements ServiceInterface
     }
 
     /**
-     *
      * @param int $priority
      * @return bool $isValidPriority
      */
@@ -99,7 +98,6 @@ class RecordService extends Logger implements ServiceInterface
     }
 
     /**
-     *
      * @param int $priority
      * @return bool $isValidPriorityLabel
      */
@@ -109,7 +107,6 @@ class RecordService extends Logger implements ServiceInterface
     }
 
     /**
-     *
      * @param string $id
      * @param int $priority
      * @param string $message
@@ -128,7 +125,6 @@ class RecordService extends Logger implements ServiceInterface
     }
 
     /**
-     *
      * @param int $id
      * @param string $priority
      * @param string $message

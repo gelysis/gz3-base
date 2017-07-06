@@ -31,7 +31,7 @@ abstract class AbstractService implements ServiceInterface, RecordableInterface
     /**
      * @return RecordService self::$controller->getRecordService()
      */
-    public function getRecordService()
+    protected function getRecordService()
     {
         return self::$controller->getRecordService();
     }

@@ -3,6 +3,11 @@ GZ3BASE
 
 # CHANGELOG
 
+### 0.9.8 (2017-07-06)
+* Tweaked deprecation of \Gz3Base\Record\RecordableTrait::setReflectionClass() method
+* phpDoc and format tweaks
+* Fixed and adjusted RecordService handling especially on the exception classes
+
 ### 0.9.7 (2017-06-24)
 * Equalised logging approach on init and deinit
 
@@ -24,9 +29,7 @@ GZ3BASE
 * Added \Gz3Base\Record\Service\NoopRecordService
 
 ### 0.9.2 (2016-12-10)
-
 Minor tweaks of the AbstractEntity class
-
 * Renamed returnDateOrTimestamp() to returnDateTimeOrTimestamp()
 * Added getDateTime(), isSetterOrGetter(), getAttribute()
 * Removed activate(), deactivate(), getActive(), setActive() as being too specific
@@ -34,15 +37,11 @@ Minor tweaks of the AbstractEntity class
 * Tweaked __call() method 
 
 ### 0.9.1 (2016-11-10)
-
 Minor tweaks of the AbstractEntity class and the RecordableTrait trait.
-
 * Improved getManager() method by implementing getNamespace() method
 
 ### 0.9.0 (2016-11-09)
-
 Initial commit containing the following files:
-
 * CHANGELOG.md
 * LICENSE.md,
 * Module.php,

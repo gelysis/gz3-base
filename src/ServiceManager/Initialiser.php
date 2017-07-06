@@ -15,6 +15,7 @@ use Gz3Base\Mvc\Service\AbstractService;
 use Gz3Base\Mvc\Service\ConfigService;
 use Gz3Base\Mvc\Service\ServiceInterface;
 use Gz3Base\Record\Service\AbstractRecordService;
+use Zend\Mvc\Exception\ExceptionInterface;
 use Zend\ServiceManager\Initializer\InitializerInterface;
 use Interop\Container\ContainerInterface;
 
@@ -22,7 +23,9 @@ use Interop\Container\ContainerInterface;
 class Initialiser implements InitializerInterface
 {
 
+    /** @var array self::$configuration */
     protected static $configuration = null;
+
 
     /**
      * {@inheritdoc}
@@ -60,6 +63,11 @@ class Initialiser implements InitializerInterface
             if (method_exists($instance, 'initialise')) {
                 $initialise |= $instance->initialise();
             }
+        }
+
+        if ($instance instanceof ExceptionInterface) {
+            $instance->setRecordService($container->get('Service\Record'));
+            $initialise = true;
         }
 
         return (bool) $initialise;

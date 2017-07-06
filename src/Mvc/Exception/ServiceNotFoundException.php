@@ -10,6 +10,7 @@
 declare(strict_types = 1);
 namespace Gz3Base\Mvc\Exception;
 
+use Gz3Base\Mvc\Exception\ExceptionTrait;
 use Gz3Base\Record\RecordableInterface;
 use Gz3Base\Record\RecordableTrait;
 use Zend\ServiceManager\Exception\ServiceNotFoundException as ZendServiceNotFoundException;
@@ -18,7 +19,7 @@ use Zend\ServiceManager\Exception\ServiceNotFoundException as ZendServiceNotFoun
 class ServiceNotFoundException extends ZendServiceNotFoundException
     implements RecordableInterface
 {
-    use RecordableTrait;
+    use ExceptionTrait, RecordableTrait;
 
     /** @var bool self::INIT_RECORDING */
     const INIT_RECORDING = false;
