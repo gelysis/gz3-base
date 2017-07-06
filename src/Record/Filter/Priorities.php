@@ -21,7 +21,6 @@ class Priorities implements FilterInterface
 
     /** @var int[] $this->priorities */
     protected $priorities;
-
     /** @var string $this->operator */
     protected $operator;
 
@@ -47,10 +46,17 @@ class Priorities implements FilterInterface
             $valid &= $this->isOperatorValid($operator);
 
             if (! $valid) {
-                throw new InvalidArgumentException(sprintf('Priorities filter data is not valid: $priorties = %s, $operator = %s.', var_export($priorities, true), var_export($operator, true)));
+                throw new InvalidArgumentException(sprintf(
+                    'Priorities filter data is not valid: $priorties = %s, $operator = %s.',
+                    var_export($priorities, true),
+                    var_export($operator, true)
+                ));
             }
         }else {
-            throw new InvalidArgumentException(sprintf('Filter constructor did not receive valid priorties data but %s.', var_export($priorities, true)));
+            throw new InvalidArgumentException(sprintf(
+                'Filter constructor did not receive valid priorties data but %s.',
+                var_export($priorities, true)
+            ));
         }
     }
 
@@ -77,7 +83,6 @@ class Priorities implements FilterInterface
     }
 
     /**
-     *
      * @param string $operator
      * @throws Exception\InvalidArgumentException
      * @return bool $isOperatorValid
