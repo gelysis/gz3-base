@@ -44,11 +44,19 @@ trait RecordableTrait
     }
 
     /**
-     * @deprecated  Will be removed in version 1.0.0
+     * @deprecated  Will be removed in version 1.1.0 latest
      * @return mixed $this
      */
     public function setReflectionClass()
     {
+        trigger_error(sprintf(
+                '%s is deprecated as of 0.9.5 and will be removed in future versions. Please use %s.',
+                __METHOD__.'()',
+                __CLASS__.'::getReflectionClass()'
+            ),
+            E_USER_DEPRECATED
+        );
+
         if (is_null($this->reflectionClass)) {
             $this->reflectionClass = new ReflectionClass($this);
         }
@@ -86,7 +94,6 @@ trait RecordableTrait
     }
 
     /**
-     *
      * @return string $this->recordIdPrefix
      */
     protected function getRecordIdPrefix() : string
