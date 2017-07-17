@@ -11,6 +11,6 @@ declare(strict_types = 1);
 namespace Gz3Base\Mvc\Exception;
 
 
-class BadEntityCallException extends BaseException
+class BadEntityCallException extends Gz3Exception
 {
 }

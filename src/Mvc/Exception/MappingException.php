@@ -11,6 +11,6 @@ declare(strict_types = 1);
 namespace Gz3Base\Mvc\Exception;
 
 
-class MappingException extends BaseException
+class MappingException extends Gz3Exception
 {
 }

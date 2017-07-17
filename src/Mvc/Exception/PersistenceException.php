@@ -11,6 +11,6 @@ declare(strict_types = 1);
 namespace Gz3Base\Mvc\Exception;
 
 
-class PersistenceException extends BaseException
+class PersistenceException extends Gz3Exception
 {
 }

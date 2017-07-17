@@ -11,6 +11,6 @@ declare(strict_types = 1);
 namespace Gz3Base\Mvc\Exception;
 
 
-class InvalidPluginException extends BaseException
+class InvalidPluginException extends Gz3Exception
 {
 }

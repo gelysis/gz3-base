@@ -11,6 +11,6 @@ declare(strict_types = 1);
 namespace Gz3Base\Mvc\Exception;
 
 
-class FileException extends BaseException
+class FileException extends Gz3Exception
 {
 }

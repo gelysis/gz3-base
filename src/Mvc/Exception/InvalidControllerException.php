@@ -11,6 +11,6 @@ declare(strict_types = 1);
 namespace Gz3Base\Mvc\Exception;
 
 
-class InvalidControllerException extends BaseException
+class InvalidControllerException extends Gz3Exception
 {
 }

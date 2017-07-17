@@ -11,6 +11,6 @@ declare(strict_types = 1);
 namespace Gz3Base\Mvc\Exception;
 
 
-class ConfigException extends BaseException
+class ConfigException extends Gz3Exception
 {
 }

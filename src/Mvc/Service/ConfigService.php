@@ -10,7 +10,7 @@
 declare(strict_types = 1);
 namespace Gz3Base\Mvc\Service;
 
-use Gz3Base\Mvc\Exception\BaseException;
+use Gz3Base\Mvc\Exception\Gz3Exception;
 use Gz3Base\Mvc\Exception\PropertyNotSetException;
 use Gz3Base\Mvc\Exception\WrongTypeException;
 
@@ -59,7 +59,7 @@ class ConfigService extends AbstractService
      * @param string $package
      * @throws WrongTypeException
      * @throws PropertyNotSetException
-     * @throws BaseException
+     * @throws Gz3Exception
      * @return array $dbDetails
      */
     public function getDbDetails(string $database) : array
@@ -103,7 +103,7 @@ class ConfigService extends AbstractService
                 $message = 'Default database key does not exst.';
             }
             $message .= ' Exception thrown in '.get_called_class().'.';
-            throw new BaseException($message);
+            throw new Gz3Exception($message);
             $dbDetails = [];
         }elseif ($fallback) {
             $recordId .= '_fbk';

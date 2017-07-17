@@ -11,6 +11,6 @@ declare(strict_types = 1);
 namespace Gz3Base\Mvc\Exception;
 
 
-class PropertyNotSetException extends BaseException
+class PropertyNotSetException extends Gz3Exception
 {
 }

@@ -16,7 +16,7 @@ use Gz3Base\Record\RecordableTrait;
 use Zend\Mvc\Exception\ExceptionInterface;
 
 
-class BaseException extends \Exception
+class Gz3Exception extends \Exception
     implements ExceptionInterface, RecordableInterface
 {
     use ExceptionTrait, RecordableTrait;
