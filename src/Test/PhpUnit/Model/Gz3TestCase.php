@@ -11,6 +11,8 @@ namespace Gz3Base\Test\PhpUnit\Model;
 
 use Gz3Base\Mvc\Exception\Gz3Exception;
 use Gz3Base\Mvc\Service\AbstractService;
+use Gz3Base\Test\PhpUnit\TestInitialiser;
+use Zend\ServiceManager\ServiceManager;
 
 
 class Gz3TestCase extends \PHPUnit_Framework_TestCase
@@ -18,6 +20,9 @@ class Gz3TestCase extends \PHPUnit_Framework_TestCase
 
     /** @var bool self::ALLOW_MANUAL_SET_OF_INVOKE_METHOD_CLASS */
     protected const ALLOW_MANUAL_SET_OF_INVOKE_METHOD_CLASS = false;
+
+    /** @var ServiceManager $this->serviceManager */
+    protected $serviceManager = null;
     /** @var mixed $this->defaultInvokeMethodClass */
     protected $objectToTest = null;
     /** @var mixed $this->invokeMethodClass */
@@ -50,12 +55,24 @@ class Gz3TestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return ServiceManager $this->serviceManager
+     */
+    protected function getServiceManager() : ServiceManager
+    {
+        if (is_null($this->serviceManager)) {
+            $this->serviceManager = TestInitialiser::getServiceManager()->get($serviceName);
+        }
+
+        return $this->serviceManager;
+    }
+
+    /**
      * @param string $serviceName
      * @return AbstractService $service
      */
     protected function getService(string $serviceName) : AbstractService
     {
-        return TestInitialiser::getServiceManager()->get($serviceName);
+        return $this->getServiceManager()->get($serviceName);
     }
 
     /**
