@@ -13,6 +13,7 @@ namespace Gz3Base\Test\PhpUnit;
 use Zend\Loader\StandardAutoloader;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
+use Zend\Test\Util\ModuleLoader;
 
 
 class TestInitialiser
@@ -35,25 +36,30 @@ class TestInitialiser
             $modules[] = $module;
             $loader->registerNamespace($module.'Test', $path.'/'.$module);
         }
-
-        $loader->registerNamespace('Gz3Base\\Test', __DIR__);
         $loader->register();
 
         $config['modules'] = $modules;
+        self::setServiceManager($config);
 
-        $serviceManager = new ServiceManager(new ServiceManagerConfig());
-        $serviceManager->setService('ApplicationConfig', $config);
-        $serviceManager->get('ModuleManager')->loadModules();
+        self::getServiceManager()->get('ModuleManager')->loadModules();
+    }
 
-        static::$serviceManager = $serviceManager;
+    /**
+     * @param array $config
+     */
+    public static function setServiceManager(array $config)
+    {
+        $serviceManager = new ServiceManager($config);
+        $serviceManager->setService('ConfigService', $config);
+        self::$serviceManager = $serviceManager;
     }
 
     /**
      * @return ServiceManager static::$serviceManager
      */
-    public static function getServiceManager()
+    public static function getServiceManager() : ServiceManager
     {
-        return static::$serviceManager;
+        return self::$serviceManager;
     }
 
 }
