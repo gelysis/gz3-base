@@ -41,15 +41,20 @@ class Gz3TestCase extends \PHPUnit_Framework_TestCase
             $serviceToTest = strtolower(strstr($reflectionClass->getShortName(), 'Test', true));
             $this->objectToTest = $this->getService($serviceToTest);
         }catch (\Exception $exception) {
-            $objectToTest = str_replace('Test', '', $className);
-            try {
-                $this->objectToTest = new $objectToTest();
-            }catch (\Exception $exception) {
-                if ($this->isStrict()) {
-                    $exceptionMessage = '$this->objectToTest could not be set on '.$className
-                    .' ('.$exception->getMessage().' ). Please follow naming convention.';
-                    throw new Gz3Exception($exceptionMessage, $exception->getCode());
+            $objectToTest = str_replace('Test', '', $reflectionClass->getName());
+            if (class_exists($objectToTest)) {
+                try {
+                    $this->objectToTest = new $objectToTest();
+                }catch (\Exception $exception) {
+                    unset($this->objectToTest);
                 }
+            }else {
+                unset($this->objectToTest);
+            }
+            if (isset($this->objectToTest) && $this->isStrict()) {
+                $exceptionMessage = '$this->objectToTest could not be set on '.$reflectionClass->getName()
+                    .' ('.$exception->getMessage().' ). Please follow naming convention.';
+                throw new Gz3Exception($exceptionMessage, $exception->getCode());
             }
         }
     }
@@ -112,7 +117,8 @@ class Gz3TestCase extends \PHPUnit_Framework_TestCase
     private function setClassOnProperty($class, $property)
     {
         if ($this->isStrict()) {
-            throw new Gz3Exception('Usage of setInvokeMethodClass not allowed.');
+            $backtrace = debug_backtrace();
+            throw new Gz3Exception('Usage of '.($backtrace[0]['function'] ?? __FUNCTION__).'() is not allowed.');
         }else {
             $this->$property = $class;
         }
