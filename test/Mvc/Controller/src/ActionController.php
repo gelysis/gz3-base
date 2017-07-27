@@ -9,10 +9,10 @@
 
 namespace Gz3BaseTest\Mvc\Controller\src;
 
-use Gz3Base\Mvc\Controller\ActionController;
+use Gz3Base\Mvc\Controller\AbstractActionController;
 
 
-class ActionController extends ActionController
+class ActionController extends AbstractActionController
 {
 
     /** @var string self::WORD */

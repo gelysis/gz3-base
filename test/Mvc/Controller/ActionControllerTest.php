@@ -14,13 +14,13 @@ use Gz3Base\Mvc\Controller\AbstractActionController;
 use Gz3Base\Mvc\Service\ConfigService;
 use Gz3Base\Record\Service\RecordService;
 use Gz3Base\Test\PhpUnit\Model\Gz3TestCase;
-use Gz3BaseTest\Mvc\Controller\src\ActionController;
+use Gz3BaseTest\Mvc\Controller\src\ActionController as Gz3TestActionController;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 
-class AbstractActionControllerTest extends Gz3TestCase
+class ActionControllerTest extends Gz3TestCase
 {
 
     /** @var bool self::ALLOW_MANUAL_SET_OF_INVOKE_METHOD_CLASS */
@@ -44,7 +44,7 @@ class AbstractActionControllerTest extends Gz3TestCase
     {
         parent::setUp();
 
-        $this->setInvokeMethodClassPermanently(new ActionController());
+        $this->setInvokeMethodClassPermanently(new Gz3TestActionController());
         $this->request = new Request();
         $this->response = null;
 
