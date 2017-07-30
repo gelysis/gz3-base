@@ -65,7 +65,7 @@ class Gz3TestCase extends \PHPUnit_Framework_TestCase
     protected function getServiceManager() : ServiceManager
     {
         if (is_null($this->serviceManager)) {
-            $this->serviceManager = TestInitialiser::getServiceManager()->get($serviceName);
+            $this->serviceManager = TestInitialiser::getServiceManager();
         }
 
         return $this->serviceManager;
