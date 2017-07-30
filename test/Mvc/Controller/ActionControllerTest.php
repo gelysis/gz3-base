@@ -17,6 +17,9 @@ use Gz3Base\Test\PhpUnit\Model\Gz3TestCase;
 use Gz3BaseTest\Mvc\Controller\src\ActionController as Gz3TestActionController;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
+use Zend\Http\Request;
+use Zend\Mvc\MvcEvent;
+use Zend\Router\RouteMatch;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 
@@ -32,8 +35,6 @@ class ActionControllerTest extends Gz3TestCase
     private $request;
     /** @var mixed $this->response */
     private $response;
-    /** @var ServiceLocatorInterface */
-    private $serviceLocator;
 
 
     /**
@@ -56,7 +57,7 @@ class ActionControllerTest extends Gz3TestCase
         $this->events = $this->createEventManager($this->sharedEvents);
 
         $this->objectToTest
-            ->setServiceLocator($this->serviceLocator)
+            ->setServiceLocator($this->serviceManager)
             ->setEventManager($this->events)
             ->setEvent($this->event);
     }
@@ -65,7 +66,7 @@ class ActionControllerTest extends Gz3TestCase
      * @param SharedEventManager
      * @return EventManager
      */
-    protected function createEventManager(SharedEventManagerInterface $sharedManager)
+    protected function createEventManager(SharedEventManager $sharedManager)
     {
         return new EventManager($sharedManager);
     }
@@ -160,7 +161,7 @@ class ActionControllerTest extends Gz3TestCase
      */
     public function testRecording()
     {
-        $this->objectToTest->setServiceLocator($this->serviceLocator);
+        $this->objectToTest->setServiceLocator($this->serviceManager);
 
         /** @todo  Implement at least one successful test */
         $id = '';
