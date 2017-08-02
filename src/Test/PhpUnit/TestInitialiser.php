@@ -24,28 +24,47 @@ class TestInitialiser
 
 
     /**
-     * @param array $config
-     * @param string[] $moduleTestPaths
+     * @param array $applicationConfig
+     * @param string[] $modulePaths
      */
-    public static function init(array $config, array $moduleTestPaths)
+    public static function init(array $applicationConfig)
     {
         $modules = [];
         $loader = new StandardAutoloader();
 
-        foreach ($moduleTestPaths as $module=>$path) {
+        $modulePaths = [];
+        foreach ($applicationConfig['module_listener_options']['module_paths'] as $modulePath) {
+            foreach ($applicationConfig['modules'] as $key=>$module) {
+                $rootSpace = strstr($module, '\\', true);
+                $relativePath = str_replace([$rootSpace.'\\', '\\'], ['', DIRECTORY_SEPARATOR], $module);
+                $isTestSpace = preg_match('#tests?#ism', (string) $key) || preg_match('#/tests?$#sm', $modulePath);
+
+                if ($isTestSpace) {
+                    $module = str_replace($rootSpace, $rootSpace.'Test', $module);
+                }
+
+                $fullPath = realpath($modulePath.DIRECTORY_SEPARATOR.$relativePath);
+                if ($fullPath) {
+                    $modulePaths[$module] = $fullPath;
+                }
+            }
+        }
+
+        foreach ($modulePaths as $module=>$path) {
             $modules[] = $module;
             $loader->registerNamespace($module.'Test', $path.'/'.$module);
         }
         $loader->register();
 
-        $config['modules'] = $modules;
-        self::setServiceManager($config);
+        $applicationConfig['modules'] = $modules;
+        self::setServiceManager($applicationConfig);
 
         self::getServiceManager()->get('ModuleManager')->loadModules();
     }
 
     /**
      * @param array $config
+     * @return void
      */
     public static function setServiceManager(array $config)
     {
