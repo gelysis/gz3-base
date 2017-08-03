@@ -15,9 +15,7 @@ $root = strstr(__FILE__, 'test'.DIRECTORY_SEPARATOR, true);
 chdir($root);
 
 $applicationConfig = include 'config'.DIRECTORY_SEPARATOR.'application.config.php';
-
 include 'init_autoloader.php';
 require_once 'src'.DIRECTORY_SEPARATOR.'Test'.DIRECTORY_SEPARATOR.'PhpUnit'.DIRECTORY_SEPARATOR.'TestInitialiser.php';
 
-//\Gz3Base\Test\PhpUnit\TestInitialiser::init($applicationConfig);
 \Gz3Base\Test\PhpUnit\TestInitialiser::setServiceManager($applicationConfig);
