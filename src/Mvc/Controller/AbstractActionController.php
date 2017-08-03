@@ -81,7 +81,7 @@ abstract class AbstractActionController extends ZendAbstractActionController
     /**
      * @return \Gz3Base\Record\Service\RecordService self::$services['record']
      */
-    public function getRecordService() : ServiceInterface
+    protected function getRecordService() : ServiceInterface
     {
         return $this->getService('record');
     }
