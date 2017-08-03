@@ -3,6 +3,17 @@ GZ3BASE
 
 # CHANGELOG
 
+### 0.9.9 (2017-08-03)
+Started with test implementation, made tweaks and fixes: 
+* Changed name of src/Mvc/Exception/BaseException to Gz3Exception and src/Test/PhpUnit/TestCase to Gz3TestCase
+* Added getServiceManager() method to Gz3TestCase and setServiceManager() method to TestInitialiser
+* Tweaked .gitignore
+* Added ActionControllerTest and ActionController
+* Removed register namespache for Gz3Base\\Test
+* Tweaked TestInitialiser: new set method, type hinting, ...
+* Added init_autoloader.php
+* Extended requirements, updated and cleaned up composer.json
+
 ### 0.9.8 (2017-07-06)
 * Tweaked deprecation of \Gz3Base\Record\RecordableTrait::setReflectionClass() method
 * phpDoc and format tweaks

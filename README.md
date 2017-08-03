@@ -18,7 +18,7 @@ Das Gz3Base-Modul ist Open Source und unter der [BSD-3-Klausel](http://opensourc
 Bitte lesen sie `LICENSE.md` für weitergehende Informationen.
 
 # SYSTEM REQUIREMENTS
-Requires PHP 7.0.7 or later.
+Requires PHP 7.0.7 (7.1 recommended) or later.
 
 # COMPONENTS
 
@@ -32,8 +32,8 @@ This package is a optional module for Zend Framework 3.
 Please contact the author.
 
 # RELEASE INFORMATION
-Gz3Base 0.9.8
-2017-07-06
+Gz3Base 0.9.9
+2017-08-03
 
 # UPDATES
 Please see `CHANGELOG.md`.
