@@ -140,6 +140,10 @@ abstract class AbstractActionController extends ZendAbstractActionController
     }
 
     /**
+     * @see Zend\Mvc\Controller\AbstractActionController::onDispatch()
+     * @see Zend\Mvc\Controller\AbstractActionController::notFoundAction()
+     * @throws ActionException
+     * @throws BadMethodCallException
      * @return mixed $invokeAction
      */
     protected function invokeAction()
@@ -151,14 +155,14 @@ abstract class AbstractActionController extends ZendAbstractActionController
                 'route_type'=>'command',
                 'command'=>implode(' ', $_SERVER['argv'])
             ]);
-        }else{
+        }else {
             $routeParameters = array_merge($routeParameters, [
                 'route_type'=>'uri',
                 'uri'=>$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']
             ]);
         }
 
-        if (count($routeParameters) > 0) {
+        if (count($routeParameters) > 0 && isset($routeParameters['action'])) {
             $this->routeParameters = $routeParameters;
             $action = $this->routeParameters['action'];
             $methodName = parent::getMethodFromAction($action);
@@ -173,11 +177,12 @@ abstract class AbstractActionController extends ZendAbstractActionController
                 throw new ActionException($message, $exception->getCode(), $exception->getPrevious());
             }
             $this->deinitialiseMethod($methodName);
-        // Dependend on Zend\Mvc\Controller\AbstractActionController::notFoundAction()
-        }elseif ($action !== 'not-found') {
+        }elseif (isset($action) && $action !== 'not-found') {
             $message = 'Action '.$action.' not properly implemented.';
             throw new BadMethodCallException($message, get_called_class(), $action);
             $actionReturn = null;
+        }else {
+            $actionReturn = $this->notFoundAction();
         }
 
         return $actionReturn;

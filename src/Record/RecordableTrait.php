@@ -157,7 +157,7 @@ trait RecordableTrait
         $prefix = '';
         if (is_array($methodPrefixes)) {
             foreach ($methodPrefixes as $methodPrefix) {
-                if (strtolower(substr($method, 0, strlen($prefix))) == $prefix) {
+                if (strtolower(substr($methodName, 0, strlen($prefix))) == $prefix) {
                     $prefix = $methodPrefix;
                     break;
                 }
@@ -165,9 +165,9 @@ trait RecordableTrait
         }
 
         if (strlen($prefix) > 0) {
-            $method = substr($method, strlen($prefix));
+            $methodName = substr($methodName, strlen($prefix));
             $recordId = substr($methodName, 0, 1).substr(
-                strlen(preg_replace('#[a-z]#', '', $method)) > 1 ? preg_replace('#[a-z]#', '', $method) : $method,
+                strlen(preg_replace('#[a-z]#', '', $methodName)) > 1 ? preg_replace('#[a-z]#', '', $methodName) : $methodName,
                 0, 2
             );
         }else {

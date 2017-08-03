@@ -16,7 +16,8 @@ use Gz3Base\Mvc\Service\ServiceTrait;
 use Zend\Log\Logger;
 
 
-class RecordService extends Logger implements ServiceInterface
+class RecordService extends Logger
+    implements ServiceInterface
 {
     use ServiceTrait;
 
