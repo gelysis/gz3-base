@@ -1,7 +1,7 @@
 <?php
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
- * @package Gz3Base\Controller
+ * @package Gz3BaseTest\Controller
  * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
  * @copyright ©2016-2017, Andreas Gerhards - All rights reserved
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause - Please check LICENSE.md for more information
@@ -18,10 +18,12 @@ use Gz3BaseTest\Mvc\Controller\src\ActionController as Gz3TestActionController;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Http\Request;
+use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
 use Zend\Router\RouteMatch;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Model\ModelInterface;
+use Zend\ServiceManager\ServiceManager;
 
 
 class ActionControllerTest extends Gz3TestCase
@@ -57,6 +59,7 @@ class ActionControllerTest extends Gz3TestCase
         $this->sharedEvents = new SharedEventManager();
         $this->events = $this->createEventManager($this->sharedEvents);
 
+        /** @var Gz3Base\Mvc\Controller\AbstractActionController $this->objectToTest */
         $this->objectToTest
             ->setServiceLocator($this->serviceManager)
             ->setEventManager($this->events)
@@ -137,13 +140,15 @@ class ActionControllerTest extends Gz3TestCase
      */
     public function testServiceLocatorInjection()
     {
-        $serviceLocator = new ServiceLocator();
-        $return = $this->objectToTest->setServiceLocator($serviceLocator);
+        $serviceManager = new ServiceManager();
+        $return = $this->objectToTest->setServiceLocator($serviceManager);
         $this->assertInstanceOf(AbstractActionController::class, $return);
 
-        $return = $this->objectToTest->getServiceLocator();
+        $return = $this->invokeMethod('getServiceLocator');
         $this->assertInstanceOf(ServiceLocatorInterface::class, $return);
-        $this->assertSame($serviceLocator, $return);
+        $this->assertSame($serviceManager, $return);
+
+        $this->objectToTest->setServiceLocator($this->serviceManager);
     }
 
     /**

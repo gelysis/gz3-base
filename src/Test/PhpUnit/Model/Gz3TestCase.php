@@ -23,7 +23,7 @@ class Gz3TestCase extends \PHPUnit_Framework_TestCase
 
     /** @var ServiceManager $this->serviceManager */
     protected $serviceManager = null;
-    /** @var mixed $this->defaultInvokeMethodClass */
+    /** @var mixed $this->objectToTest */
     protected $objectToTest = null;
     /** @var mixed $this->invokeMethodClass */
     protected $invokeMethodClass = null;
@@ -153,11 +153,11 @@ class Gz3TestCase extends \PHPUnit_Framework_TestCase
         if (!is_null($this->invokeMethodClass)) {
             $invokeMethodReflectionClass = $this->invokeMethodClass;
 
-        }elseif (!is_null($this->objectToTest())) {
+        }elseif (!is_null($this->objectToTest)) {
             $invokeMethodReflectionClass= $this->objectToTest;
         }
 
-        return new \ReflectionClass($invokeMethodClass);
+        return new \ReflectionClass($invokeMethodReflectionClass);
     }
 
     /**
