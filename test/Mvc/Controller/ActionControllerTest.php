@@ -14,7 +14,7 @@ use Gz3Base\Mvc\Controller\AbstractActionController;
 use Gz3Base\Mvc\Service\ConfigService;
 use Gz3Base\Record\Service\RecordService;
 use Gz3Base\Test\PhpUnit\Model\Gz3TestCase;
-use Gz3BaseTest\Mvc\Controller\src\ActionController as Gz3TestActionController;
+use Gz3BaseTest\Mvc\Controller\Fixture\ActionController as Gz3TestActionController;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\Http\Request;
