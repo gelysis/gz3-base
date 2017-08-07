@@ -77,6 +77,14 @@ abstract class AbstractModule
     }
 
     /**
+     * @return string $namespaceAutoloaderPath
+     */
+    protected function getNamespaceAutoloaderPath()
+    {
+        return $this->getDirectory().'/src/'.$this->getNamespace();
+    }
+
+    /**
      * Defines src/<Namespace> as standard code sub-directory
      * @return string[][][] $autoloaderConfig
      */
@@ -85,7 +93,7 @@ abstract class AbstractModule
         $autoloderConfig = [
             'Zend\Loader\StandardAutoloader'=>[
                 'namespaces'=>[
-                    $this->getNamespace()=>$this->getDirectory().'/src/'.$this->getNamespace()
+                    $this->getNamespace()=>$this->getNamespaceAutoloaderPath()
                 ]
             ]
         ];
