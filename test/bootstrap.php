@@ -14,8 +14,11 @@ error_reporting(E_ALL | E_STRICT);
 $root = strstr(__FILE__, 'test'.DIRECTORY_SEPARATOR, true);
 chdir($root);
 
-$applicationConfig = include 'config'.DIRECTORY_SEPARATOR.'application.config.php';
 include 'init_autoloader.php';
 require_once 'src'.DIRECTORY_SEPARATOR.'Test'.DIRECTORY_SEPARATOR.'PhpUnit'.DIRECTORY_SEPARATOR.'TestInitialiser.php';
+$applicationConfig = include 'config'.DIRECTORY_SEPARATOR.'application.config.php';
 
-\Gz3Base\Test\PhpUnit\TestInitialiser::setServiceManager($applicationConfig);
+//\Gz3Base\Test\PhpUnit\TestInitialiser::init($applicationConfig);
+
+require_once 'test'.DIRECTORY_SEPARATOR.'Fixture'.DIRECTORY_SEPARATOR.'Module.php';
+\Gz3Base\Test\PhpUnit\TestInitialiser::setServiceManager(\Gz3BaseTest\Fixture\Module::getConfig());
