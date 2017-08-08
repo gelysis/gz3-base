@@ -61,7 +61,7 @@ class ActionControllerTest extends Gz3TestCase
 
         /** @var Gz3Base\Mvc\Controller\AbstractActionController $this->objectToTest */
         $this->objectToTest
-            ->setServiceLocator($this->serviceManager)
+            ->setServiceLocator($this->getServiceManager())
             ->setEventManager($this->events)
             ->setEvent($this->event);
     }
