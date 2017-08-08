@@ -1,11 +1,11 @@
 <?php
 /**
  * Gz3Base - Zend Framework Base Tweaks / Zend Framework Basis Anpassungen
- * Generic phpunit bootstrap file
- * @package Gz3Base
+ * Application config, purely for phpunit testing
+ * @package Gz3Base\config
  * @author Andreas Gerhards <ag.dialogue@yahoo.co.nz>
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause -
  * @copyright ©2016-2017, Andreas Gerhards - All rights reserved
+ * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  */
 
 $applicationConfig = [
