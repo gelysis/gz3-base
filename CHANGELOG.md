@@ -3,6 +3,11 @@ GZ3BASE
 
 # CHANGELOG
 
+### 0.9.10 (2017-08-09)
+* Added phpunit.xml
+* Tweaked application config and phpunit bootstrap
+* Replaced class property with service manager getter
+
 ### 0.9.9 (2017-08-03)
 Started with test implementation, made tweaks and fixes: 
 * Changed name of src/Mvc/Exception/BaseException to Gz3Exception and src/Test/PhpUnit/TestCase to Gz3TestCase
